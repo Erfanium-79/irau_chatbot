@@ -1,3 +1,5 @@
 langchain
 langchain-community
+langchain-openai 
+faiss-cpu
 # Add any other libraries your app needs
