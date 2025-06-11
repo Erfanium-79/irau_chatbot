@@ -83,8 +83,9 @@ def load_qa_chain(_llm, _embeddings):
     try:
         faq_loader = TextLoader("data/faqs.csv", encoding='utf-8')
         service_loader = TextLoader("data/services.json", encoding='utf-8')
+        info = TextLoader("data/info.md", encoding='utf-8')
 
-        docs = faq_loader.load() + service_loader.load()
+        docs = faq_loader.load() + service_loader.load() + info.load()
 
         vectorstore = FAISS.from_documents(docs, _embeddings)
         retriever = vectorstore.as_retriever()
