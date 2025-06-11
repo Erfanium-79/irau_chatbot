@@ -1,0 +1,13 @@
+categories:
+  - Service Downtime
+  - Billing Issues
+  - Slow Website
+  - Poor Support
+  - Feature Request
+examples:
+  Service Downtime:
+    - "The website is not loading."
+    - "Your service is down again."
+  Billing Issues:
+    - "I was overcharged."
+    - "I need a refund."
