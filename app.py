@@ -134,7 +134,8 @@ Intent:"""
         return "unknown"
 
 def handle_greeting(query: str):
-    return "Hello! Welcome to ACME Inc. We offer cloud services, analytics, and more. How can I help you today?"
+    result = qa_chain.invoke({"query": query})
+    return "Hello! Welcome to ACME Inc. We offer cloud services, analytics, and more. How can I help you today?"+"\n" + result['result']
 
 def handle_visitor_info(query: str):
     result = qa_chain.invoke({"query": query})
@@ -157,6 +158,23 @@ def handle_complaint(query: str):
     except:
         return "I am sorry to hear that. I was unable to log your complaint, but please contact our support team directly."
 
+def handle_chitchat(query: str):
+    """Handles chitchat with a direct LLM call and adds a promotional message."""
+    if llm is None:
+        return "I'm not in the mood for chitchat right now, but I can help with our services!"
+    try:
+        # Get a direct response from the LLM for the chitchat
+        response = llm.invoke([HumanMessage(content=query)])
+        chitchat_response = response.content.strip()
+
+        # Add a promotional message
+        promotional_message = "\n\nBy the way, did you know you can supercharge your business with our cloud services and analytics tools? Ask me how!"
+
+        return f"{chitchat_response}{promotional_message}"
+    except Exception as e:
+        st.error(f"Chitchat handling failed: {e}")
+        return "I'd love to chat, but I'm having a bit of trouble thinking right now. Please ask me about our services instead."
+
 
 def chatbot_response(user_input: str):
     """Routes user input to the correct handler based on intent."""
@@ -164,13 +182,15 @@ def chatbot_response(user_input: str):
     st.sidebar.info(f"Detected Intent: **{intent}**") # Display intent in the sidebar for debugging
 
     if intent == "greeting":
-        return handle_greeting()
+        return handle_greeting(user_input)
     elif intent == "visitor_info":
         return handle_visitor_info(user_input)
     elif intent == "faq":
         return handle_faq_or_support(user_input)
     elif intent == "complaint":
         return handle_complaint(user_input)
+    elif intent == "chitchat":
+        return handle_chitchat(user_input)
     else: # Handles 'chitchat' and 'unknown'
         return "I'm not sure how to help with that. Could you please rephrase or ask about our services, pricing, or support?"
 
