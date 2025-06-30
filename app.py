@@ -193,19 +193,28 @@ def chatbot_response(user_input: str):
     elif intent == "chitchat":
         return handle_chitchat(user_input)
     else: # Handles 'chitchat' and 'unknown'
-        return "I'm not sure how to help with that. Could you please rephrase or ask about our services, pricing, or support?"
+        return handle_chitchat(user_input)
 
 # =================================================================
 # 6. STREAMLIT CHAT INTERFACE
 # Manages chat history and user interaction.
 # =================================================================
+st.markdown("""
+    <style>
+    body, .stMarkdown {
+        text-align: left !important;
+        direction: rtl !important;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
 # Display chat messages from history on app rerun
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
-        st.markdown(message["content"])
+        st.markdown(f"<div style='text-align: left; direction: rtl;'>{message["content"]}</div>", unsafe_allow_html=True)
 
 # React to user input
 if prompt := st.chat_input("What can I help you with?"):

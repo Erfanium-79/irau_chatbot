@@ -1,24 +1,29 @@
 # =================================================================
-# 1. CORRECTED IMPORTS
-# These now point to the new packages you installed and are combined.
+# chatbot.py
+# This file handles the chatbot's runtime logic, including
+# loading the pre-computed vector store and responding to queries.
 # =================================================================
-from langchain_community.document_loaders import TextLoader
+
+# =================================================================
+# 1. IMPORTS
+# All necessary libraries for the Streamlit app.
+# =================================================================
+import os
 from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import FAISS
 from langchain_openai import ChatOpenAI
-from langchain.chains import RetrievalQA  # <-- ADDED for the QA chain
-from langchain.text_splitter import CharacterTextSplitter
+from langchain.chains import RetrievalQA
 from langchain.schema import HumanMessage
-import os
 
 # =================================================================
-# 2. YOUR API KEY AND MODEL INITIALIZATION
+# 2. CONFIGURATION AND INITIALIZATION
 # Make sure your API key is set correctly and base_url is specified.
 # All model and embedding initializations now use AvalAI's endpoint.
 # =================================================================
 # It's recommended to use environment variables for security.
-# Replace "your-avalai-api-key" with your actual AvalAI API key.
-os.environ["AVALAI_API_KEY"] = "aa-dhz3cYYm2mJ1LeowMpSDXfrRiy7jQjhUcaNDjN0FWw5Uk9uY"
+# Replace "your-avalai-api-key" with your actual AvalAI API key
+# or ensure it's set in your environment before running this script.
+os.environ["AVALAI_API_KEY"] = "aa-dhz3cYYm2mJ1LeowMpSDXfrRiy7jQjhUcaNDjN0FWw5Uk9uY" #
 
 # Define the base URL for AvalAI
 AVALAI_BASE_URL = "https://api.avalai.ir/v1"
@@ -49,34 +54,37 @@ else:
         )
 
         # =================================================================
-        # 3. DATA LOADING, RETRIEVER, AND QA CHAIN SETUP
-        # This section loads documents and sets up the vectorstore and QA chain.
+        # 3. LOAD VECTOR STORE AND SETUP RETRIEVER/QA CHAIN
+        # This section loads the pre-computed FAISS vector store.
         # =================================================================
-        print("Loading documents and setting up vectorstore...")
-        try:
-            faq_loader = TextLoader("data/faqs.csv")
-            service_loader = TextLoader("data/services.json")
-            info_loader = TextLoader('data/info.md')
-            complaints = TextLoader('data/complaints.yaml')
+        print("Loading vectorstore...")
+        vector_store_path = "faiss_index" # This must match the path used in embedder.py
 
-            docs = faq_loader.load() + service_loader.load() + info_loader.load()
+        if os.path.exists(vector_store_path):
+            try:
+                # Load the local FAISS index
+                # allow_dangerous_deserialization=True is often needed for FAISS.load_local
+                vectorstore = FAISS.load_local(vector_store_path, embeddings, allow_dangerous_deserialization=True)
+                retriever = vectorstore.as_retriever()
+                print(f"Vectorstore loaded successfully from {vector_store_path}.")
 
-            vectorstore = FAISS.from_documents(docs, embeddings)
-            retriever = vectorstore.as_retriever()
-            print("Documents loaded and vectorstore created successfully.")
+                # Create the QA chain for handling FAQs
+                qa_chain = RetrievalQA.from_chain_type(
+                    llm=llm,
+                    chain_type="stuff",  # "stuff" is a common chain type for this purpose
+                    retriever=retriever
+                )
+                print("QA chain created successfully.")
 
-            # Create the QA chain for handling FAQs
-            qa_chain = RetrievalQA.from_chain_type(
-                llm=llm,
-                chain_type="stuff",  # "stuff" is a common chain type for this purpose
-                retriever=retriever
-            )
-            print("QA chain created successfully.")
-
-        except FileNotFoundError:
-            print("⚠️ Warning: Data files 'data/faqs.csv' or 'data/services.json' not found.")
-            print("The FAQ and support handler will not be able to answer questions.")
+            except Exception as e:
+                print(f"❌ Error loading vectorstore from {vector_store_path}: {e}")
+                print("Please ensure embedder.py has been run to create the FAISS index.")
+                retriever = None
+        else:
+            print(f"⚠️ Warning: Vectorstore not found at {vector_store_path}.")
+            print("Please run embedder.py first to create the FAISS index.")
             retriever = None
+            qa_chain = None # Ensure qa_chain is None if vectorstore isn't loaded
 
         # =================================================================
         # 4. INTENT DETECTION FUNCTION
@@ -99,18 +107,35 @@ Intent:"""
             intent_text = response.content.strip()
             if ":" in intent_text:
                 return intent_text.split(":")[-1].strip()
-            else: 
+            else:
                 return intent_text
+
         # =================================================================
         # 5. INTENT HANDLERS
         # These functions define the specific actions for each detected intent.
         # =================================================================
-        def handle_greeting():
-            return "Hello! Welcome to ACME Inc. We offer cloud services, analytics, and more. Can I help you get started?"
-
-        def handle_visitor_info():
-            return "Looks like it's your first time here! You can try our free analytics tool or learn more about our email hosting."
-
+        def handle_greeting(query: str):
+            """Handles greeting intent, potentially enhanced with info from QA chain."""
+            base_response = "Hello! Welcome to ACME Inc. We offer cloud services, analytics, and more. How can I help you today?"
+            if qa_chain is None:
+                return base_response + "\n\n(Note: Knowledge base unavailable to provide more context for greeting.)"
+            try:
+                result = qa_chain.invoke({"query": query})
+                return base_response + "\n" + result['result']
+            except Exception as e:
+                return base_response + "\n\n(Note: Failed to retrieve additional context for greeting.)"
+     
+        def handle_visitor_info(query: str):
+            """Handles visitor info intent, potentially enhanced with info from QA chain."""
+            base_response = "Looks like it's your first time here! You can try our free analytics tool or learn more about our email hosting."
+            if qa_chain is None:
+                return base_response + "\n\n(Note: Knowledge base unavailable to provide more context for visitor info.)"
+            try:
+                result = qa_chain.invoke({"query": query})
+                return base_response + "\n" + result['result']
+            except Exception as e:
+                return base_response + "\n\n(Note: Failed to retrieve additional context for visitor info.)"
+            
         def handle_faq_or_support(query: str):
             if not qa_chain:
                 return "I'm sorry, my knowledge base is currently unavailable. Please make sure the data files are present."
@@ -165,7 +190,7 @@ Intent:"""
         user_query_3 = "The new update is terrible and broke my dashboard."
         response_3 = chatbot_response(user_query_3)
         print(f"User: '{user_query_3}'\nBot: {response_3}\n")
-        
+
         # ** Test Unknown Intent **
         user_query_4 = "Can you tell me a joke?"
         response_4 = chatbot_response(user_query_4)
