@@ -9,6 +9,7 @@
 # All necessary libraries for the Streamlit app.
 # =================================================================
 import os
+import csv # Import the csv module
 from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import FAISS
 from langchain_openai import ChatOpenAI
@@ -30,6 +31,11 @@ AVALAI_BASE_URL = "https://api.avalai.ir/v1"
 
 # Initialize qa_chain as None. It will be created later if data is available.
 qa_chain = None
+
+# Global variables to store user information and chatbot state
+user_name = None
+user_phone_number = None
+user_info_collected = False
 
 # Check if the API key is available
 if "AVALAI_API_KEY" not in os.environ:
@@ -93,18 +99,19 @@ else:
         def detect_intent(user_input: str) -> str:
             """Classifies the intent of the user input."""
             prompt = f"""
-You are an intent classifier. Classify the intent of the user input below into one of these:
-- greeting
-- faq
-- complaint
-- visitor_info
-- chitchat
-- unknown
-
-Input: "{user_input}"
-Intent:"""
+        You are an intent classifier. Classify the intent of the user input below into one of these:
+        - greeting
+        - faq
+        - complaint
+        - visitor_info
+        - chitchat
+        - unknown
+        avoid the unknown category as much as possible
+        Input: "{user_input}"
+        Intent:"""
             response = llm.invoke([HumanMessage(content=prompt)])
             intent_text = response.content.strip()
+            # Clean up the intent text to get just the category name
             if ":" in intent_text:
                 return intent_text.split(":")[-1].strip()
             else:
@@ -113,41 +120,61 @@ Intent:"""
         # =================================================================
         # 5. INTENT HANDLERS
         # These functions define the specific actions for each detected intent.
+        # All responses should be comprehensive and in Persian.
         # =================================================================
         def handle_greeting(query: str):
-            """Handles greeting intent, potentially enhanced with info from QA chain."""
-            base_response = "Hello! Welcome to ACME Inc. We offer cloud services, analytics, and more. How can I help you today?"
+            """Handles greeting intent, potentially enhanced with info from QA chain, in Persian."""
+            base_response = "سلام، من ربات مجموعه ایران استرالیا هستم، چجوری میتونم کمکتون کنم؟"
             if qa_chain is None:
-                return base_response + "\n\n(Note: Knowledge base unavailable to provide more context for greeting.)"
+                return base_response + "\n\n(توجه: پایگاه دانش برای ارائه اطلاعات بیشتر در مورد احوالپرسی در دسترس نیست.)"
             try:
-                result = qa_chain.invoke({"query": query})
+                # Add prompt engineering for comprehensive Persian response
+                query_for_qa = f"لطفا به این سوال در مورد خدمات ما به طور کامل و جامع به فارسی پاسخ دهید: {query}"
+                result = qa_chain.invoke({"query": query_for_qa})
                 return base_response + "\n" + result['result']
             except Exception as e:
-                return base_response + "\n\n(Note: Failed to retrieve additional context for greeting.)"
+                return base_response + "\n\n(توجه: بازیابی اطلاعات اضافی برای احوالپرسی با مشکل مواجه شد.)"
      
         def handle_visitor_info(query: str):
-            """Handles visitor info intent, potentially enhanced with info from QA chain."""
-            base_response = "Looks like it's your first time here! You can try our free analytics tool or learn more about our email hosting."
+            """Handles visitor info intent, potentially enhanced with info from QA chain, in Persian."""
+            base_response = "به نظر می‌رسد این اولین باری است که از ما بازدید می‌کنید! می‌توانید ابزار تجزیه و تحلیل رایگان ما را امتحان کنید یا در مورد میزبانی ایمیل ما اطلاعات بیشتری کسب کنید."
             if qa_chain is None:
-                return base_response + "\n\n(Note: Knowledge base unavailable to provide more context for visitor info.)"
+                return base_response + "\n\n(توجه: پایگاه دانش برای ارائه اطلاعات بیشتر در مورد بازدیدکنندگان جدید در دسترس نیست.)"
             try:
-                result = qa_chain.invoke({"query": query})
+                # Add prompt engineering for comprehensive Persian response
+                query_for_qa = f"لطفا اطلاعات جامع و کاملی در مورد خدمات مجموعه ایران استرالیا، آدرس شعبه های مجموعه و خدمات ما به فارسی ارائه دهید، همچنین سعی کن در قامت یک ربات فروش محصول کاربر را قانع کنی که یادگیری زبان کار مفیدی است و باید هرچه زودتر شروع کند و کجا بهتر از موسسه ایران استرالیا: {query}"
+                result = qa_chain.invoke({"query": query_for_qa})
                 return base_response + "\n" + result['result']
             except Exception as e:
-                return base_response + "\n\n(Note: Failed to retrieve additional context for visitor info.)"
+                return base_response + "\n\n(توجه: بازیابی اطلاعات اضافی برای بازدیدکنندگان جدید با مشکل مواجه شد.)"
             
         def handle_faq_or_support(query: str):
+            """Handles FAQ or support intent, providing comprehensive Persian answers."""
             if not qa_chain:
-                return "I'm sorry, my knowledge base is currently unavailable. Please make sure the data files are present."
-            # Use .invoke which is the modern way to run chains. The result is a dictionary.
-            result = qa_chain.invoke({"query": query})
-            return result['result']
+                return "متاسفم، پایگاه دانش من در حال حاضر در دسترس نیست. لطفاً مطمئن شوید که فایل‌های داده موجود هستند."
+            
+            # Add prompt engineering to ensure comprehensive Persian answer
+            query_for_qa = f"لطفاً به این سوال به طور کامل، جامع و با جزئیات کافی به فارسی پاسخ دهید: {query}"
+            
+            try:
+                result = qa_chain.invoke({"query": query_for_qa})
+                return result['result']
+            except Exception as e:
+                return f"متاسفم، در حال حاضر نمی‌توانم به سوال شما پاسخ دهم. لطفاً بعداً دوباره امتحان کنید. خطای رخ داده: {e}"
 
         def handle_complaint(query: str):
-            # Log to file or DB
-            with open("complaints.log", "a") as f:
-                f.write(f"User Complaint: {query}\n")
-            return "I am sorry to hear that. I've logged your complaint and someone from our support team will reach out shortly."
+            """Handles complaint intent, logging to complaints.csv with user details, in Persian."""
+            global user_name, user_phone_number
+            
+            # Create or append to complaints.csv
+            file_exists = os.path.isfile("complaints.csv")
+            with open("complaints.csv", "a", newline='', encoding='utf-8') as f:
+                writer = csv.writer(f)
+                if not file_exists:
+                    writer.writerow(["Name", "Phone Number", "Complaint"]) # Write header if file is new
+                writer.writerow([user_name if user_name else "N/A", user_phone_number if user_phone_number else "N/A", query])
+            
+            return "از اینکه این موضوع را با ما در میان گذاشتید متاسفم. شکایت شما ثبت شد و یکی از اعضای تیم پشتیبانی ما به زودی با شما تماس خواهد گرفت."
 
         # =================================================================
         # 6. MAIN CHATBOT PIPELINE
@@ -155,49 +182,90 @@ Intent:"""
         # =================================================================
         def chatbot_response(user_input: str):
             """The main function that routes user input to the correct handler."""
+            global user_info_collected, user_name, user_phone_number
+
+            # First, check if user information has been collected
+            if not user_info_collected:
+                if user_name is None:
+                    user_name = user_input.strip()
+                    return "متشکرم، لطفا شماره تلفن خود را وارد کنید:"
+                elif user_phone_number is None:
+                    user_phone_number = user_input.strip()
+                    user_info_collected = True
+                    return f"سلام {user_name}! شماره تلفن شما ({user_phone_number}) ثبت شد. حالا چگونه می‌توانم به شما کمک کنم؟"
+                else:
+                    # This case should ideally not be reached if logic is correct
+                    return "در حال حاضر اطلاعات شما را دارم. چگونه می‌توانم به شما کمک کنم؟"
+
+            # If user information is collected, proceed with intent detection
             intent = detect_intent(user_input)
-            print(f"(Intent Detected: {intent})") # Optional: print detected intent for debugging
+            print(f"(قصد شناسایی شده: {intent})") # Optional: print detected intent for debugging
 
             if intent == "greeting":
-                return handle_greeting()
+                return handle_greeting(user_input)
             elif intent == "visitor_info":
-                return handle_visitor_info()
+                return handle_visitor_info(user_input)
             elif intent == "faq":
                 return handle_faq_or_support(user_input)
             elif intent == "complaint":
                 return handle_complaint(user_input)
-            else: # Handles 'chitchat' and 'unknown'
-                return "I'm not sure how to help with that yet. Try asking a question about our services or pricing."
+            elif intent == "chitchat":
+                # For chitchat, we can try to use the LLM directly for a general response in Persian
+                prompt = f"""
+شما یک دستیار هوش مصنوعی دوستانه و مفید هستید. لطفاً به این پیام به صورت دوستانه و جامع به فارسی پاسخ دهید:
+پیام کاربر: "{user_input}"
+پاسخ:"""
+                response = llm.invoke([HumanMessage(content=prompt)])
+                return response.content.strip()
+            else: # Handles 'unknown'
+                return "من هنوز مطمئن نیستم چگونه به شما در این مورد کمک کنم. سعی کنید سوالی در مورد خدمات یا قیمت‌های ما بپرسید."
 
         # =================================================================
         # 7. TESTING THE FULL PIPELINE
         # Send different types of queries to test the routing logic.
         # =================================================================
-        print("\n--- Testing the Full Chatbot Pipeline ---")
+        print("\n--- تست کامل خط لوله ربات چت ---")
+
+        # ** Simulate initial user interaction to get credentials **
+        print("\n--- جمع آوری اطلاعات کاربر ---")
+        response_initial = chatbot_response("علی احمدی")
+        print(f"ربات: {response_initial}")
+        response_phone = chatbot_response("09123456789")
+        print(f"ربات: {response_phone}\n")
+
 
         # ** Test Greeting Intent **
-        user_query_1 = "Hi, how are you?"
+        user_query_1 = "سلام، حال شما چطور است؟"
         response_1 = chatbot_response(user_query_1)
-        print(f"User: '{user_query_1}'\nBot: {response_1}\n")
+        print(f"کاربر: '{user_query_1}'\nربات: {response_1}\n")
 
         # ** Test FAQ Intent **
         # NOTE: This requires your data files to be present for a meaningful answer.
-        user_query_2 = "How can I check my billing details?"
+        user_query_2 = "چگونه می توانم جزئیات صورتحساب خود را بررسی کنم؟"
         response_2 = chatbot_response(user_query_2)
-        print(f"User: '{user_query_2}'\nBot: {response_2}\n")
+        print(f"کاربر: '{user_query_2}'\nربات: {response_2}\n")
 
         # ** Test Complaint Intent **
-        user_query_3 = "The new update is terrible and broke my dashboard."
+        user_query_3 = "به روز رسانی جدید افتضاح است و داشبورد من را خراب کرد."
         response_3 = chatbot_response(user_query_3)
-        print(f"User: '{user_query_3}'\nBot: {response_3}\n")
+        print(f"کاربر: '{user_query_3}'\nربات: {response_3}\n")
 
         # ** Test Unknown Intent **
-        user_query_4 = "Can you tell me a joke?"
+        user_query_4 = "می توانید یک لطیفه برای من بگویید؟"
         response_4 = chatbot_response(user_query_4)
-        print(f"User: '{user_query_4}'\nBot: {response_4}\n")
+        print(f"کاربر: '{user_query_4}'\nربات: {response_4}\n")
 
+        # ** Test Visitor Info Intent **
+        user_query_5 = "من تازه وارد هستم، چه کاری می توانم انجام دهم؟"
+        response_5 = chatbot_response(user_query_5)
+        print(f"کاربر: '{user_query_5}'\nربات: {response_5}\n")
+
+        # ** Test Chitchat Intent **
+        user_query_6 = "هوا چطور است؟"
+        response_6 = chatbot_response(user_query_6)
+        print(f"کاربر: '{user_query_6}'\nربat: {response_6}\n")
 
     except Exception as e:
         # If anything goes wrong, the error will be printed.
-        print(f"\n❌ An error occurred during setup or query: {e}")
-        print("Please check your AvalAI API key, base URL, internet connection, and AvalAI account status.")
+        print(f"\n❌ خطایی در طول راه اندازی یا پرس و جو رخ داد: {e}")
+        print("لطفاً کلید API AvalAI، آدرس پایه، اتصال به اینترنت و وضعیت حساب AvalAI خود را بررسی کنید.")
