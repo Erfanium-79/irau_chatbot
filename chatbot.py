@@ -16,6 +16,9 @@ from langchain_openai import ChatOpenAI
 from langchain.chains import RetrievalQA
 from langchain.schema import HumanMessage
 
+# Import the API key from your config.py file
+from config import AVALAI_API_KEY
+
 # =================================================================
 # 2. CONFIGURATION AND INITIALIZATION
 # Make sure your API key is set correctly and base_url is specified.
@@ -24,7 +27,6 @@ from langchain.schema import HumanMessage
 # It's recommended to use environment variables for security.
 # Replace "your-avalai-api-key" with your actual AvalAI API key
 # or ensure it's set in your environment before running this script.
-os.environ["AVALAI_API_KEY"] = "aa-dhz3cYYm2mJ1LeowMpSDXfrRiy7jQjhUcaNDjN0FWw5Uk9uY" #
 
 # Define the base URL for AvalAI
 AVALAI_BASE_URL = "https://api.avalai.ir/v1"
@@ -38,9 +40,9 @@ user_phone_number = None
 user_info_collected = False
 
 # Check if the API key is available
-if "AVALAI_API_KEY" not in os.environ:
-    print("❌ Error: AVALAI_API_KEY environment variable not set.")
-    print("Please set your AvalAI API key to run this script.")
+if not AVALAI_API_KEY: # This check is now based on the imported variable
+    print("❌ Error: AVALAI_API_KEY not found in config.py.")
+    print("Please ensure config.py exists and AVALAI_API_KEY is set.")
 else:
     print("AvalAI API key found. Initializing models and embeddings...")
     try:
@@ -48,14 +50,14 @@ else:
         llm = ChatOpenAI(
             model="gpt-4o",
             temperature=0.7,
-            api_key=os.environ["AVALAI_API_KEY"],
+            api_key=AVALAI_API_KEY,
             base_url=AVALAI_BASE_URL
         )
 
         # Initialize OpenAIEmbeddings, pointing to the AvalAI base_url
         embeddings = OpenAIEmbeddings(
             model="text-embedding-3-small",
-            api_key=os.environ["AVALAI_API_KEY"],
+            api_key=AVALAI_API_KEY,
             base_url=AVALAI_BASE_URL
         )
 
@@ -63,7 +65,7 @@ else:
         # 3. LOAD VECTOR STORE AND SETUP RETRIEVER/QA CHAIN
         # This section loads the pre-computed FAISS vector store.
         # =================================================================
-        print("Loading vectorstore...")
+        # print("Loading vectorstore...")
         vector_store_path = "faiss_index" # This must match the path used in embedder.py
 
         if os.path.exists(vector_store_path):
@@ -72,7 +74,7 @@ else:
                 # allow_dangerous_deserialization=True is often needed for FAISS.load_local
                 vectorstore = FAISS.load_local(vector_store_path, embeddings, allow_dangerous_deserialization=True)
                 retriever = vectorstore.as_retriever()
-                print(f"Vectorstore loaded successfully from {vector_store_path}.")
+                # print(f"Vectorstore loaded successfully from {vector_store_path}.")
 
                 # Create the QA chain for handling FAQs
                 qa_chain = RetrievalQA.from_chain_type(
@@ -80,7 +82,7 @@ else:
                     chain_type="stuff",  # "stuff" is a common chain type for this purpose
                     retriever=retriever
                 )
-                print("QA chain created successfully.")
+                # print("QA chain created successfully.")
 
             except Exception as e:
                 print(f"❌ Error loading vectorstore from {vector_store_path}: {e}")
@@ -124,29 +126,29 @@ else:
         # =================================================================
         def handle_greeting(query: str):
             """Handles greeting intent, potentially enhanced with info from QA chain, in Persian."""
-            base_response = "سلام، من ربات مجموعه ایران استرالیا هستم، چجوری میتونم کمکتون کنم؟"
+            base_response = "سلام، من ربات مجموعه آموزش زبان ایران استرالیا هستم، چجوری میتونم کمکتون کنم؟"
             if qa_chain is None:
-                return base_response + "\n\n(توجه: پایگاه دانش برای ارائه اطلاعات بیشتر در مورد احوالپرسی در دسترس نیست.)"
+                return base_response + "\n\n(توجه: پایگاه دانش برای ارائه اطلاعات بیشتر در دسترس نیست.)"
             try:
                 # Add prompt engineering for comprehensive Persian response
-                query_for_qa = f"لطفا به این سوال در مورد خدمات ما به طور کامل و جامع به فارسی پاسخ دهید: {query}"
+                query_for_qa = f"لطفا جواب بده و تو هم سلام و احوالپرسی کن، حواست باشه که تو ربات مجموعه آموزشی ایران استرالیا هستی.: {query}"
                 result = qa_chain.invoke({"query": query_for_qa})
-                return base_response + "\n" + result['result']
+                return "\n" + result['result']
             except Exception as e:
-                return base_response + "\n\n(توجه: بازیابی اطلاعات اضافی برای احوالپرسی با مشکل مواجه شد.)"
+                return base_response + "\n\n(پایگاه دانش برای ارائه اطلاعات بیشتر در دسترس نیست.)"
      
         def handle_visitor_info(query: str):
             """Handles visitor info intent, potentially enhanced with info from QA chain, in Persian."""
-            base_response = "به نظر می‌رسد این اولین باری است که از ما بازدید می‌کنید! می‌توانید ابزار تجزیه و تحلیل رایگان ما را امتحان کنید یا در مورد میزبانی ایمیل ما اطلاعات بیشتری کسب کنید."
+            base_response = "سلام، به نظر میرسه که اولین باره با موسسه ایران استرالیا داری صحبت میکنی"
             if qa_chain is None:
-                return base_response + "\n\n(توجه: پایگاه دانش برای ارائه اطلاعات بیشتر در مورد بازدیدکنندگان جدید در دسترس نیست.)"
+                return "\n\n(پایگاه دانش برای ارائه اطلاعات بیشتر در دسترس نیست.)"
             try:
                 # Add prompt engineering for comprehensive Persian response
-                query_for_qa = f"لطفا اطلاعات جامع و کاملی در مورد خدمات مجموعه ایران استرالیا، آدرس شعبه های مجموعه و خدمات ما به فارسی ارائه دهید، همچنین سعی کن در قامت یک ربات فروش محصول کاربر را قانع کنی که یادگیری زبان کار مفیدی است و باید هرچه زودتر شروع کند و کجا بهتر از موسسه ایران استرالیا: {query}"
+                query_for_qa = f"لطفا اطلاعات جامع و کاملی در مورد خدمات مجموعه ایران استرالیا، آدرس شعبه های مجموعه و خدمات ما به فارسی ارائه دهید، همچنین سعی کن در قامت یک ربات فروش محصول کاربر را قانع کنی که یادگیری زبان کار مفیدی است و باید هرچه زودتر شروع کند و کجا بهتر از موسسه ایران استرالیا، البته قبل از هر چیز اول جواب سوال پرسیده شده رو به طور صریح بده، مثلا اگه پرسید آدرس کجاست، اول آدرس رو دقیق بگو، بعد متن رو گسترده تر کن و اطلاعات بیشتری بده، یا مثلا اگه پرسید چجوری ثبت نام کنم اول راجب به ثبت نام و تعیین سطح بگو، بعدا توضیحات بیشتری بده: {query}"
                 result = qa_chain.invoke({"query": query_for_qa})
-                return base_response + "\n" + result['result']
+                return "\n" + result['result']
             except Exception as e:
-                return base_response + "\n\n(توجه: بازیابی اطلاعات اضافی برای بازدیدکنندگان جدید با مشکل مواجه شد.)"
+                return base_response + "\n\n(پایگاه دانش برای ارائه اطلاعات بیشتر در دسترس نیست.)"
             
         def handle_faq_or_support(query: str):
             """Handles FAQ or support intent, providing comprehensive Persian answers."""
@@ -154,7 +156,7 @@ else:
                 return "متاسفم، پایگاه دانش من در حال حاضر در دسترس نیست. لطفاً مطمئن شوید که فایل‌های داده موجود هستند."
             
             # Add prompt engineering to ensure comprehensive Persian answer
-            query_for_qa = f"لطفاً به این سوال به طور کامل، جامع و با جزئیات کافی به فارسی پاسخ دهید: {query}"
+            query_for_qa = f"لطفاً به این سوال به طور کامل، و با جزئیات کافی به فارسی پاسخ دهید: {query}"
             
             try:
                 result = qa_chain.invoke({"query": query_for_qa})
@@ -171,7 +173,7 @@ else:
             with open("complaints.csv", "a", newline='', encoding='utf-8') as f:
                 writer = csv.writer(f)
                 if not file_exists:
-                    writer.writerow(["Name", "Phone Number", "Complaint"]) # Write header if file is new
+                    writer.writerow(["Name", "Phone Number", "complaint"]) # Write header if file is new
                 writer.writerow([user_name if user_name else "N/A", user_phone_number if user_phone_number else "N/A", query])
             
             return "از اینکه این موضوع را با ما در میان گذاشتید متاسفم. شکایت شما ثبت شد و یکی از اعضای تیم پشتیبانی ما به زودی با شما تماس خواهد گرفت."
@@ -199,7 +201,7 @@ else:
 
             # If user information is collected, proceed with intent detection
             intent = detect_intent(user_input)
-            print(f"(قصد شناسایی شده: {intent})") # Optional: print detected intent for debugging
+            # print(f"(قصد شناسایی شده: {intent})") # Optional: print detected intent for debugging
 
             if intent == "greeting":
                 return handle_greeting(user_input)

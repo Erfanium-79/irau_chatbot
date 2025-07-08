@@ -10,16 +10,17 @@ from langchain_openai import ChatOpenAI
 from langchain.chains import RetrievalQA
 from langchain.schema import HumanMessage
 import os
+# Import the API key from your config.py file
+from config import AVALAI_API_KEY
 
 AVALAI_BASE_URL = "https://api.avalai.ir/v1"
-API_KEY = "aa-sA1aXnkZuhCmV9EG9XIe0E1fGNWVWaDFHLZnehH3kfF5Vqj1"
 
 # Initialize qa_chain as None. It will be created later if data is available.
 qa_chain = None
 
 embeddings = OpenAIEmbeddings(
     model="text-embedding-3-small",
-    api_key=API_KEY,
+    api_key=AVALAI_API_KEY,
     base_url=AVALAI_BASE_URL
 )
 
