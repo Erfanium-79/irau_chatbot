@@ -30,6 +30,7 @@ origins = [
     "http://localhost",
     "http://localhost:3000", # Assuming the frontend runs on port 3000
     "https://www.iran-australia.com", # The production domain of the frontend
+    "https://iran-australia.com",
 ]
 
 app.add_middleware(
