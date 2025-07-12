@@ -4,5 +4,5 @@ langchain-openai
 faiss-cpu
 streamlit
 fastapi
-unicorn
+uvicorn
 # Add any other libraries your app needs
