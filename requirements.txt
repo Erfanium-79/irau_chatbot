@@ -3,4 +3,6 @@ langchain-community
 langchain-openai 
 faiss-cpu
 streamlit
+fastapi
+unicorn[standard]
 # Add any other libraries your app needs

@@ -222,51 +222,6 @@ else:
             else: # Handles 'unknown'
                 return "من هنوز مطمئن نیستم چگونه به شما در این مورد کمک کنم. سعی کنید سوالی در مورد خدمات یا قیمت‌های ما بپرسید."
 
-        # =================================================================
-        # 7. TESTING THE FULL PIPELINE
-        # Send different types of queries to test the routing logic.
-        # =================================================================
-        print("\n--- تست کامل خط لوله ربات چت ---")
-
-        # ** Simulate initial user interaction to get credentials **
-        print("\n--- جمع آوری اطلاعات کاربر ---")
-        response_initial = chatbot_response("علی احمدی")
-        print(f"ربات: {response_initial}")
-        response_phone = chatbot_response("09123456789")
-        print(f"ربات: {response_phone}\n")
-
-
-        # ** Test Greeting Intent **
-        user_query_1 = "سلام، حال شما چطور است؟"
-        response_1 = chatbot_response(user_query_1)
-        print(f"کاربر: '{user_query_1}'\nربات: {response_1}\n")
-
-        # ** Test FAQ Intent **
-        # NOTE: This requires your data files to be present for a meaningful answer.
-        user_query_2 = "چگونه می توانم جزئیات صورتحساب خود را بررسی کنم؟"
-        response_2 = chatbot_response(user_query_2)
-        print(f"کاربر: '{user_query_2}'\nربات: {response_2}\n")
-
-        # ** Test Complaint Intent **
-        user_query_3 = "به روز رسانی جدید افتضاح است و داشبورد من را خراب کرد."
-        response_3 = chatbot_response(user_query_3)
-        print(f"کاربر: '{user_query_3}'\nربات: {response_3}\n")
-
-        # ** Test Unknown Intent **
-        user_query_4 = "می توانید یک لطیفه برای من بگویید؟"
-        response_4 = chatbot_response(user_query_4)
-        print(f"کاربر: '{user_query_4}'\nربات: {response_4}\n")
-
-        # ** Test Visitor Info Intent **
-        user_query_5 = "من تازه وارد هستم، چه کاری می توانم انجام دهم؟"
-        response_5 = chatbot_response(user_query_5)
-        print(f"کاربر: '{user_query_5}'\nربات: {response_5}\n")
-
-        # ** Test Chitchat Intent **
-        user_query_6 = "هوا چطور است؟"
-        response_6 = chatbot_response(user_query_6)
-        print(f"کاربر: '{user_query_6}'\nربat: {response_6}\n")
-
     except Exception as e:
         # If anything goes wrong, the error will be printed.
         print(f"\n❌ خطایی در طول راه اندازی یا پرس و جو رخ داد: {e}")
