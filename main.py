@@ -77,7 +77,7 @@ async def chat_with_bot(request: Request):
     data = webhook_data.get("data", {})
 
     # 3. Process the webhook only if it's a new message from a visitor
-    if event == "new_message" and data.get("type") == "text" and data.get("sender", {}).get("from") == "visitor":
+    if event == "new_message" and data.get("type") == "text" and data.get("sender", {}).get("from") == "user":
         user_message = data.get("content")
         
         if not user_message:
