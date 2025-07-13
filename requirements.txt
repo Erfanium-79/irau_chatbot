@@ -5,4 +5,5 @@ faiss-cpu
 streamlit
 fastapi
 uvicorn
+httpx
 # Add any other libraries your app needs

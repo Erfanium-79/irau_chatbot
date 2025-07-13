@@ -1,32 +1,27 @@
 # =================================================================
-# main.py (PRODUCTION VERSION)
-# This file creates a FastAPI application to serve the chatbot.
-# =================================================================
-
-# =================================================================
-# 1. IMPORTS
+# main.py (FINAL PRODUCTION VERSION v4.0)
 # =================================================================
 import uvicorn
-from fastapi import FastAPI, Request, Response, HTTPException
-from pydantic import BaseModel
-from fastapi.middleware.cors import CORSMiddleware
+import os
+import httpx
 import logging
-
-# Import the chatbot_response function from your chatbot.py file
+from fastapi import FastAPI, Request, Response, HTTPException, BackgroundTasks
+from fastapi.middleware.cors import CORSMiddleware
 from chatbot import chatbot_response
 
-# Configure logging
+# Configure logging to see outputs in Render
 logging.basicConfig(level=logging.INFO)
 
 # =================================================================
-# 2. FASTAPI APP INITIALIZATION
+# 1. APP INITIALIZATION & CONFIGURATION
 # =================================================================
 app = FastAPI(
     title="Chatbot API for Goftino",
     description="An API to interact with the chatbot via Goftino.",
-    version="2.0.0"
+    version="4.0.0"
 )
 
+# Add CORS middleware to allow requests from your frontend and Goftino
 origins = [
     "http://localhost",
     "http://localhost:3000",
@@ -34,7 +29,6 @@ origins = [
     "https://iran-australia.com",
     "https://www.goftino.com",
 ]
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -43,69 +37,84 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# IMPORTANT: Get this key from your Goftino dashboard
-# You should store this as an environment variable in Render for better security
-GOFTINO_API_KEY = "apo4zfmz3642l50g1axxbwme42cbbe86df1f4208f72063b91ce2a3c829183fc7" 
+# Get the Goftino API key from environment variables for security
+GOFTINO_API_KEY = os.environ.get("GOFTINO_API_KEY")
+
+# This is the correct Send Message API URL from the documentation
+GOFTINO_SEND_API_URL = "https://api.goftino.com/v1/send_message"
 
 # =================================================================
-# 3. REQUEST AND RESPONSE MODELS
+# 2. HELPER FUNCTION TO SEND MESSAGES
 # =================================================================
-class ChatResponse(BaseModel):
-    """Response model for the chatbot's reply."""
-    reply: str
+async def send_reply_to_goftino(chat_id: str, message: str):
+    """
+    Sends a reply message to the Goftino "Send Message" API.
+    """
+    if not GOFTINO_API_KEY:
+        logging.error("GOFTINO_API_KEY is not set!")
+        return
+
+    headers = {
+        "Content-Type": "application/json",
+        "goftino-key": GOFTINO_API_KEY
+    }
+
+    # This payload structure is based on the documentation you provided.
+    # NOTE: The 'operator_id' field is omitted. See the note below.
+    payload = {
+        "chat_id": chat_id,
+        "message": message
+    }
+
+    async with httpx.AsyncClient() as client:
+        try:
+            response = await client.post(GOFTINO_SEND_API_URL, json=payload, headers=headers)
+            response.raise_for_status()  # Raises an exception for 4XX or 5XX status codes
+            logging.info(f"Successfully sent reply to chat_id {chat_id}. Response: {response.json()}")
+        except httpx.HTTPStatusError as e:
+            logging.error(f"Error sending message to Goftino: {e.response.status_code} - {e.response.text}")
 
 # =================================================================
-# 4. API ENDPOINT
+# 3. MAIN WEBHOOK ENDPOINT
 # =================================================================
 @app.post("/chat/")
-async def chat_with_bot(request: Request):
+async def chat_with_bot(request: Request, background_tasks: BackgroundTasks):
     """
-    This endpoint receives a webhook from Goftino, processes it, 
-    and returns the chatbot's response.
+    This is the main webhook that receives all events from Goftino.
     """
-    # 1. Verify the request is coming from Goftino
-    # goftino_key = request.headers.get("goftino-key")
-    # if goftino_key != GOFTINO_API_KEY:
-    #     logging.warning("Invalid API Key received.")
-    #     raise HTTPException(status_code=403, detail="Invalid API Key")
+    goftino_key = request.headers.get("goftino-key")
+    if goftino_key != GOFTINO_API_KEY:
+        raise HTTPException(status_code=403, detail="Invalid API Key")
 
-    # 2. Get the JSON body from the webhook
     webhook_data = await request.json()
     logging.info(f"Received webhook: {webhook_data}")
 
     event = webhook_data.get("event")
     data = webhook_data.get("data", {})
 
-    # 3. Process the webhook only if it's a new message from a visitor
+    # Process the message only if it's a new text message from a user
     if event == "new_message" and data.get("type") == "text" and data.get("sender", {}).get("from") == "user":
         user_message = data.get("content")
-        
-        if not user_message:
-            logging.info("Ignored: Message content is empty.")
-            return Response(status_code=204) # 204 No Content
+        chat_id = data.get("chat_id")
 
-        # 4. Get the chatbot's response
-        logging.info(f"Processing message from visitor: {user_message}")
-        response_text = chatbot_response(user_message)
-        
-        # 5. Return the response in the format Goftino expects
-        # NOTE: The provided docs do not specify the response format. 
-        # We are assuming Goftino expects a simple JSON with a 'reply' key.
-        # If this does not work, the next step is to use the "Send Message" API.
-        return ChatResponse(reply=response_text)
-    else:
-        # 6. If it's not a new message from a visitor, ignore it.
-        # We return a 200 OK or 204 No Content response so Goftino knows we received it.
-        logging.info(f"Ignored event '{event}' from sender '{data.get('sender', {}).get('from')}'.")
-        return Response(status_code=204) # 204 No Content is best for "processed, nothing to return"
+        if user_message and chat_id:
+            logging.info(f"Processing message from user for chat_id {chat_id}")
+            response_text = chatbot_response(user_message)
+
+            # Add the reply task to the background.
+            # This allows us to send the 204 response immediately.
+            background_tasks.add_task(send_reply_to_goftino, chat_id, response_text)
+
+    # Acknowledge the webhook immediately with a 204 No Content response
+    return Response(status_code=204)
 
 @app.get("/")
 def read_root():
     return {"status": "ok", "message": "Iran-Australia Chatbot is running."}
 
 # =================================================================
-# 5. RUN THE APPLICATION
+# 4. RUN THE APPLICATION
 # =================================================================
 if __name__ == "__main__":
-    # For local development, use "127.0.0.1". For Render, use "0.0.0.0".
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run(app, host="0.0.0.0", port=port)
