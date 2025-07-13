@@ -45,7 +45,7 @@ app.add_middleware(
 
 # IMPORTANT: Get this key from your Goftino dashboard
 # You should store this as an environment variable in Render for better security
-GOFTINO_API_KEY = "apo4zfmz3642l50g1axbwme42cbbe86df1f4208f72063b91ce2a3c829183fc7" 
+GOFTINO_API_KEY = "apo4zfmz3642l50g1axxbwme42cbbe86df1f4208f72063b91ce2a3c829183fc7" 
 
 # =================================================================
 # 3. REQUEST AND RESPONSE MODELS
