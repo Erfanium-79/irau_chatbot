@@ -64,10 +64,10 @@ async def chat_with_bot(request: Request):
     and returns the chatbot's response.
     """
     # 1. Verify the request is coming from Goftino
-    goftino_key = request.headers.get("goftino-key")
-    if goftino_key != GOFTINO_API_KEY:
-        logging.warning("Invalid API Key received.")
-        raise HTTPException(status_code=403, detail="Invalid API Key")
+    # goftino_key = request.headers.get("goftino-key")
+    # if goftino_key != GOFTINO_API_KEY:
+    #     logging.warning("Invalid API Key received.")
+    #     raise HTTPException(status_code=403, detail="Invalid API Key")
 
     # 2. Get the JSON body from the webhook
     webhook_data = await request.json()
