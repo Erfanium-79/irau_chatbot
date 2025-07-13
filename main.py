@@ -50,27 +50,30 @@ async def send_reply_to_goftino(chat_id: str, message: str):
     """
     Sends a reply message to the Goftino "Send Message" API.
     """
-    if not GOFTINO_API_KEY:
-        logging.error("GOFTINO_API_KEY is not set!")
+    # These will now be read from your Render environment settings
+    api_key = os.environ.get("GOFTINO_API_KEY")
+    operator_id = os.environ.get("GOFTINO_OPERATOR_ID")
+
+    if not api_key or not operator_id:
+        logging.error("API Key or Operator ID is not set in environment variables!")
         return
 
     headers = {
         "Content-Type": "application/json",
-        "goftino-key": GOFTINO_API_KEY
+        "goftino-key": api_key
     }
 
-    # This payload structure is based on the documentation you provided.
-    # NOTE: The 'operator_id' field is omitted. See the note below.
     payload = {
         "chat_id": chat_id,
-        "message": message
+        "message": message,
+        "operator_id": operator_id  # Uses the ID from your settings
     }
 
     async with httpx.AsyncClient() as client:
         try:
             response = await client.post(GOFTINO_SEND_API_URL, json=payload, headers=headers)
-            response.raise_for_status()  # Raises an exception for 4XX or 5XX status codes
-            logging.info(f"Successfully sent reply to chat_id {chat_id}. Response: {response.json()}")
+            response.raise_for_status()
+            logging.info(f"Successfully sent reply to chat_id {chat_id}.")
         except httpx.HTTPStatusError as e:
             logging.error(f"Error sending message to Goftino: {e.response.status_code} - {e.response.text}")
 
