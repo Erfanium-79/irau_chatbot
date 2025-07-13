@@ -82,9 +82,9 @@ async def chat_with_bot(request: Request, background_tasks: BackgroundTasks):
     """
     This is the main webhook that receives all events from Goftino.
     """
-    goftino_key = request.headers.get("goftino-key")
-    if goftino_key != GOFTINO_API_KEY:
-        raise HTTPException(status_code=403, detail="Invalid API Key")
+    # goftino_key = request.headers.get("goftino-key")
+    # if goftino_key != GOFTINO_API_KEY:
+    #     raise HTTPException(status_code=403, detail="Invalid API Key")
 
     webhook_data = await request.json()
     logging.info(f"Received webhook: {webhook_data}")
