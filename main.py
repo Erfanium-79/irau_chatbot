@@ -1,5 +1,5 @@
 # =================================================================
-# main.py (FINAL PRODUCTION VERSION v4.2)
+# main.py (FINAL PRODUCTION VERSION v5.0)
 # =================================================================
 import uvicorn
 import os
@@ -17,8 +17,8 @@ logging.basicConfig(level=logging.INFO)
 # =================================================================
 app = FastAPI(
     title="Chatbot API for Goftino",
-    description="An API to interact with the chatbot via Goftino.",
-    version="4.2.0"
+    description="An API to interact with the chatbot via Goftino, now simplified.",
+    version="5.0.0"
 )
 
 # Add CORS middleware to allow requests from your frontend and Goftino
@@ -48,7 +48,6 @@ GOFTINO_SEND_API_URL = "https://api.goftino.com/v1/send_message"
 # =================================================================
 
 # In-memory dictionary to store session data for each chat.
-# For production, you might consider a more persistent storage like Redis.
 chat_sessions = {}
 
 
@@ -89,7 +88,7 @@ async def send_reply_to_goftino(chat_id: str, message: str):
 async def chat_with_bot(request: Request, background_tasks: BackgroundTasks):
     """
     This is the main webhook that receives all events from Goftino.
-    It now proactively starts the conversation when a new user arrives.
+    It welcomes the user and immediately processes their message.
     """
     webhook_data = await request.json()
     logging.info(f"Received webhook: {webhook_data}")
@@ -99,39 +98,35 @@ async def chat_with_bot(request: Request, background_tasks: BackgroundTasks):
     chat_id = data.get("chat_id")
 
     if not chat_id:
-        # If there's no chat_id, we can't do anything.
         return Response(status_code=204)
-
-    # --- NEW, MORE ROBUST LOGIC ---
     
-    # Get the session. If it doesn't exist, `session` will be None.
     session = chat_sessions.get(chat_id)
 
-    # A new conversation is detected if the event is 'new_chat' (ideal scenario)
-    # or if we've never seen this chat_id before (fallback scenario).
-    is_new_conversation = (event == "new_chat") or (session is None)
+    # If this is the first time we see this user, create a session and welcome them.
+    if session is None:
+        # Extract user info from the webhook payload (e.g., from the 'sender' object)
+        sender_info = data.get("sender", {})
+        user_name = sender_info.get("name")
+        user_phone = sender_info.get("phone")
 
-    if is_new_conversation:
-        logging.info(f"New conversation detected for chat_id: {chat_id}. Event: '{event}'. Sending welcome prompt.")
+        logging.info(f"New conversation for chat_id: {chat_id}. User: {user_name}, Phone: {user_phone}")
         
-        # Create a new session if it doesn't exist yet.
-        if session is None:
-            chat_sessions[chat_id] = {
-                "name": None,
-                "phone_number": None,
-                "info_collected": False
-            }
+        # Create a new session and store the user's info from Goftino
+        session = {
+            "name": user_name,
+            "phone_number": user_phone,
+        }
+        chat_sessions[chat_id] = session
         
-        # This is the first message the bot sends to the user.
-        initial_prompt = "سلام! برای شروع لطفا نام خود را وارد کنید."
+        # The bot now sends a simple, direct welcome message.
+        initial_prompt = "سلام! لطفا پیام خود را بنویسید."
         
-        # Send the prompt as a background task.
         background_tasks.add_task(send_reply_to_goftino, chat_id, initial_prompt)
         
         # We have initiated the conversation. Stop processing here and wait for the user's reply.
         return Response(status_code=204)
 
-    # If we reach here, it's an existing conversation. Process any incoming message.
+    # For subsequent messages from the user, process them directly.
     if event == "new_message" and data.get("type") == "text" and data.get("sender", {}).get("from") == "user":
         user_message = data.get("content")
         if user_message:
