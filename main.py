@@ -133,7 +133,7 @@ async def chat_with_bot(request: Request, background_tasks: BackgroundTasks):
             logging.info(f"Processing message from existing chat {chat_id}: '{user_message}'")
             
             # Get the bot's response from the chatbot logic module.
-            response_text = chatbot_response(user_message, session)
+            response_text = chatbot_response(user_message)
             
             # Send the response back to the user.
             background_tasks.add_task(send_reply_to_goftino, chat_id, response_text)
