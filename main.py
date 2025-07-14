@@ -46,6 +46,10 @@ GOFTINO_SEND_API_URL = "https://api.goftino.com/v1/send_message"
 # =================================================================
 # 2. HELPER FUNCTION TO SEND MESSAGES
 # =================================================================
+
+chat_sessions = {}
+
+
 async def send_reply_to_goftino(chat_id: str, message: str):
     """
     Sends a reply message to the Goftino "Send Message" API.
@@ -85,30 +89,40 @@ async def chat_with_bot(request: Request, background_tasks: BackgroundTasks):
     """
     This is the main webhook that receives all events from Goftino.
     """
-    # goftino_key = request.headers.get("goftino-key")
-    # if goftino_key != GOFTINO_API_KEY:
-    #     raise HTTPException(status_code=403, detail="Invalid API Key")
-
     webhook_data = await request.json()
     logging.info(f"Received webhook: {webhook_data}")
 
     event = webhook_data.get("event")
     data = webhook_data.get("data", {})
+    chat_id = data.get("chat_id")
 
-    # Process the message only if it's a new text message from a user
-    if event == "new_message" and data.get("type") == "text" and data.get("sender", {}).get("from") == "user":
+    if not chat_id:
+        return Response(status_code=204) # Nothing to do without a chat_id
+
+    # Get or create a session for this user
+    if chat_id not in chat_sessions:
+        chat_sessions[chat_id] = {
+            "name": None,
+            "phone_number": None,
+            "info_collected": False
+        }
+    session = chat_sessions[chat_id]
+
+    # 1. Handle the start of a new chat
+    if event == "new_chat": # <-- Assumed event name
+        logging.info(f"New chat started for {chat_id}. Sending welcome.")
+        initial_prompt = "سلام! برای شروع لطفا نام خود را وارد کنید."
+        background_tasks.add_task(send_reply_to_goftino, chat_id, initial_prompt)
+
+    # 2. Handle a new message from the user
+    elif event == "new_message" and data.get("type") == "text" and data.get("sender", {}).get("from") == "user":
         user_message = data.get("content")
-        chat_id = data.get("chat_id")
-
-        if user_message and chat_id:
-            logging.info(f"Processing message from user for chat_id {chat_id}")
-            response_text = chatbot_response(user_message)
-
-            # Add the reply task to the background.
-            # This allows us to send the 204 response immediately.
+        if user_message:
+            logging.info(f"Processing message from {chat_id}")
+            # Pass the session object to the logic handler
+            response_text = chatbot_response(user_message, session)
             background_tasks.add_task(send_reply_to_goftino, chat_id, response_text)
 
-    # Acknowledge the webhook immediately with a 204 No Content response
     return Response(status_code=204)
 
 @app.get("/")

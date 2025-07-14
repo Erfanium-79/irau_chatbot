@@ -131,7 +131,7 @@ else:
                 return base_response + "\n\n(توجه: پایگاه دانش برای ارائه اطلاعات بیشتر در دسترس نیست.)"
             try:
                 # Add prompt engineering for comprehensive Persian response
-                query_for_qa = f"لطفا جواب بده و تو هم سلام و احوالپرسی کن، حواست باشه که تو ربات مجموعه آموزشی ایران استرالیا هستی.: {query}"
+                query_for_qa = f"لطفا جواب بده و تو هم سلام و احوالپرسی کن، حواست باشه که تو ربات مجموعه آموزشی ایران استرالیا هستی و بجز این موسسه نباید تبلیغ هیچ جای دیگه ای رو بکنی.: {query}"
                 result = qa_chain.invoke({"query": query_for_qa})
                 return "\n" + result['result']
             except Exception as e:
@@ -144,7 +144,7 @@ else:
                 return "\n\n(پایگاه دانش برای ارائه اطلاعات بیشتر در دسترس نیست.)"
             try:
                 # Add prompt engineering for comprehensive Persian response
-                query_for_qa = f"لطفا اطلاعات جامع و کاملی در مورد خدمات مجموعه ایران استرالیا، آدرس شعبه های مجموعه و خدمات ما به فارسی ارائه دهید، همچنین سعی کن در قامت یک ربات فروش محصول کاربر را قانع کنی که یادگیری زبان کار مفیدی است و باید هرچه زودتر شروع کند و کجا بهتر از موسسه ایران استرالیا، البته قبل از هر چیز اول جواب سوال پرسیده شده رو به طور صریح بده، مثلا اگه پرسید آدرس کجاست، اول آدرس رو دقیق بگو، بعد متن رو گسترده تر کن و اطلاعات بیشتری بده، یا مثلا اگه پرسید چجوری ثبت نام کنم اول راجب به ثبت نام و تعیین سطح بگو، بعدا توضیحات بیشتری بده: {query}"
+                query_for_qa = f" سعی کن در قامت یک ربات فروش محصول کاربر را قانع کنی که یادگیری زبان کار مفیدی است و باید هرچه زودتر شروع کند و کجا بهتر از موسسه ایران استرالیا، البته قبل از هر چیز اول جواب سوال پرسیده شده رو بده، مثلا اگه پرسید آدرس کجاست، اول آدرس رو دقیق بگو، بعد اگه حرف بیشتری داشتی بگو خیلی هم زیاده گویی نکن، مختصر و مفید، مثلا اگه پرسید چجوری ثبت نام کنم اول راجب به ثبت نام و تعیین سطح بگو {query}"
                 result = qa_chain.invoke({"query": query_for_qa})
                 return "\n" + result['result']
             except Exception as e:
@@ -182,33 +182,31 @@ else:
         # 6. MAIN CHATBOT PIPELINE
         # This function connects intent detection to the appropriate handler.
         # =================================================================
-        def chatbot_response(user_input: str):
-            """The main function that routes user input to the correct handler."""
-            global user_info_collected, user_name, user_phone_number
-
-            # First, check if user information has been collected
-            if not user_info_collected:
-                if user_name is None:
-                    user_name = user_input.strip()
+        def chatbot_response(user_input: str, session: dict):
+            """
+            The main function that routes user input to the correct handler using session state.
+            """
+            # First, check if user information has been collected from the session
+            if not session.get("info_collected"):
+                if session.get("name") is None:
+                    session["name"] = user_input.strip()
                     return "متشکرم، لطفا شماره تلفن خود را وارد کنید:"
-                elif user_phone_number is None:
-                    user_phone_number = user_input.strip()
-                    user_info_collected = True
-                    return f"سلام {user_name}! شماره تلفن شما ({user_phone_number}) ثبت شد. حالا چگونه می‌توانم به شما کمک کنم؟"
-                else:
-                    # This case should ideally not be reached if logic is correct
-                    return "در حال حاضر اطلاعات شما را دارم. چگونه می‌توانم به شما کمک کنم؟"
+                elif session.get("phone_number") is None:
+                    session["phone_number"] = user_input.strip()
+                    session["info_collected"] = True
+                    return f"سلام {session['name']}! شماره تلفن شما ({session['phone_number']}) ثبت شد. حالا چگونه می‌توانم به شما کمک کنم؟"
 
             # If user information is collected, proceed with intent detection
             intent = detect_intent(user_input)
-            # print(f"(قصد شناسایی شده: {intent})") # Optional: print detected intent for debugging
+            # logging.info(f"Detected intent: {intent} for chat_id with name {session.get('name')}")
+
 
             if intent == "greeting":
                 return handle_greeting(user_input)
             elif intent == "visitor_info":
                 return handle_visitor_info(user_input)
             elif intent == "faq":
-                return handle_faq_or_support(user_input)
+                return handle_visitor_info(user_input)
             elif intent == "complaint":
                 return handle_complaint(user_input)
             elif intent == "chitchat":
