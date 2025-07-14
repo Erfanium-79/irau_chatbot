@@ -1,11 +1,11 @@
 # =================================================================
-# main.py (FINAL PRODUCTION VERSION v4.0)
+# main.py (FINAL PRODUCTION VERSION v4.1)
 # =================================================================
 import uvicorn
 import os
 import httpx
 import logging
-from fastapi import FastAPI, Request, Response, HTTPException, BackgroundTasks
+from fastapi import FastAPI, Request, Response, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
 from chatbot import chatbot_response
 
@@ -18,7 +18,7 @@ logging.basicConfig(level=logging.INFO)
 app = FastAPI(
     title="Chatbot API for Goftino",
     description="An API to interact with the chatbot via Goftino.",
-    version="4.0.0"
+    version="4.1.0"
 )
 
 # Add CORS middleware to allow requests from your frontend and Goftino
@@ -47,6 +47,8 @@ GOFTINO_SEND_API_URL = "https://api.goftino.com/v1/send_message"
 # 2. HELPER FUNCTION TO SEND MESSAGES
 # =================================================================
 
+# In-memory dictionary to store session data for each chat.
+# For production, you might consider a more persistent storage like Redis.
 chat_sessions = {}
 
 
@@ -54,7 +56,6 @@ async def send_reply_to_goftino(chat_id: str, message: str):
     """
     Sends a reply message to the Goftino "Send Message" API.
     """
-    # These will now be read from your Render environment settings
     api_key = os.environ.get("GOFTINO_API_KEY")
     operator_id = os.environ.get("GOFTINO_OPERATOR_ID")
 
@@ -70,7 +71,7 @@ async def send_reply_to_goftino(chat_id: str, message: str):
     payload = {
         "chat_id": chat_id,
         "message": message,
-        "operator_id": operator_id  # Uses the ID from your settings
+        "operator_id": operator_id
     }
 
     async with httpx.AsyncClient() as client:
@@ -88,6 +89,7 @@ async def send_reply_to_goftino(chat_id: str, message: str):
 async def chat_with_bot(request: Request, background_tasks: BackgroundTasks):
     """
     This is the main webhook that receives all events from Goftino.
+    It now proactively starts the conversation when a new user arrives.
     """
     webhook_data = await request.json()
     logging.info(f"Received webhook: {webhook_data}")
@@ -97,30 +99,45 @@ async def chat_with_bot(request: Request, background_tasks: BackgroundTasks):
     chat_id = data.get("chat_id")
 
     if not chat_id:
-        return Response(status_code=204) # Nothing to do without a chat_id
+        # If there's no chat_id, we can't do anything.
+        return Response(status_code=204)
 
-    # Get or create a session for this user
+    # --- KEY LOGIC CHANGE ---
+    # If this is the first time we're seeing this chat_id, it's a new conversation.
+    # We create a session and immediately send the welcome prompt to ask for the user's name.
     if chat_id not in chat_sessions:
+        logging.info(f"New conversation started for chat_id: {chat_id}. Sending welcome prompt.")
+        
+        # Create a new session for this user
         chat_sessions[chat_id] = {
             "name": None,
             "phone_number": None,
             "info_collected": False
         }
-    session = chat_sessions[chat_id]
-
-    # 1. Handle the start of a new chat
-    if event == "new_chat": # <-- Assumed event name
-        logging.info(f"New chat started for {chat_id}. Sending welcome.")
+        
+        # This is the first message the bot sends to the user
         initial_prompt = "سلام! برای شروع لطفا نام خود را وارد کنید."
+        
+        # Send the prompt as a background task
         background_tasks.add_task(send_reply_to_goftino, chat_id, initial_prompt)
+        
+        # We have initiated the conversation by asking for the name.
+        # We stop here and wait for the user's reply. The original message from the user
+        # that may have triggered this flow is effectively ignored in favor of our prompt.
+        return Response(status_code=204)
 
-    # 2. Handle a new message from the user
-    elif event == "new_message" and data.get("type") == "text" and data.get("sender", {}).get("from") == "user":
+    # If the session already exists, we process any incoming message.
+    session = chat_sessions[chat_id]
+    
+    if event == "new_message" and data.get("type") == "text" and data.get("sender", {}).get("from") == "user":
         user_message = data.get("content")
         if user_message:
-            logging.info(f"Processing message from {chat_id}")
-            # Pass the session object to the logic handler
+            logging.info(f"Processing message from {chat_id}: '{user_message}'")
+            
+            # Get the bot's response from the chatbot logic module
             response_text = chatbot_response(user_message, session)
+            
+            # Send the response back to the user
             background_tasks.add_task(send_reply_to_goftino, chat_id, response_text)
 
     return Response(status_code=204)
