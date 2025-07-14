@@ -1,5 +1,5 @@
 # =================================================================
-# main.py (FINAL PRODUCTION VERSION v4.1)
+# main.py (FINAL PRODUCTION VERSION v4.2)
 # =================================================================
 import uvicorn
 import os
@@ -18,7 +18,7 @@ logging.basicConfig(level=logging.INFO)
 app = FastAPI(
     title="Chatbot API for Goftino",
     description="An API to interact with the chatbot via Goftino.",
-    version="4.1.0"
+    version="4.2.0"
 )
 
 # Add CORS middleware to allow requests from your frontend and Goftino
@@ -102,42 +102,45 @@ async def chat_with_bot(request: Request, background_tasks: BackgroundTasks):
         # If there's no chat_id, we can't do anything.
         return Response(status_code=204)
 
-    # --- KEY LOGIC CHANGE ---
-    # If this is the first time we're seeing this chat_id, it's a new conversation.
-    # We create a session and immediately send the welcome prompt to ask for the user's name.
-    if chat_id not in chat_sessions:
-        logging.info(f"New conversation started for chat_id: {chat_id}. Sending welcome prompt.")
+    # --- NEW, MORE ROBUST LOGIC ---
+    
+    # Get the session. If it doesn't exist, `session` will be None.
+    session = chat_sessions.get(chat_id)
+
+    # A new conversation is detected if the event is 'new_chat' (ideal scenario)
+    # or if we've never seen this chat_id before (fallback scenario).
+    is_new_conversation = (event == "new_chat") or (session is None)
+
+    if is_new_conversation:
+        logging.info(f"New conversation detected for chat_id: {chat_id}. Event: '{event}'. Sending welcome prompt.")
         
-        # Create a new session for this user
-        chat_sessions[chat_id] = {
-            "name": None,
-            "phone_number": None,
-            "info_collected": False
-        }
+        # Create a new session if it doesn't exist yet.
+        if session is None:
+            chat_sessions[chat_id] = {
+                "name": None,
+                "phone_number": None,
+                "info_collected": False
+            }
         
-        # This is the first message the bot sends to the user
+        # This is the first message the bot sends to the user.
         initial_prompt = "سلام! برای شروع لطفا نام خود را وارد کنید."
         
-        # Send the prompt as a background task
+        # Send the prompt as a background task.
         background_tasks.add_task(send_reply_to_goftino, chat_id, initial_prompt)
         
-        # We have initiated the conversation by asking for the name.
-        # We stop here and wait for the user's reply. The original message from the user
-        # that may have triggered this flow is effectively ignored in favor of our prompt.
+        # We have initiated the conversation. Stop processing here and wait for the user's reply.
         return Response(status_code=204)
 
-    # If the session already exists, we process any incoming message.
-    session = chat_sessions[chat_id]
-    
+    # If we reach here, it's an existing conversation. Process any incoming message.
     if event == "new_message" and data.get("type") == "text" and data.get("sender", {}).get("from") == "user":
         user_message = data.get("content")
         if user_message:
-            logging.info(f"Processing message from {chat_id}: '{user_message}'")
+            logging.info(f"Processing message from existing chat {chat_id}: '{user_message}'")
             
-            # Get the bot's response from the chatbot logic module
+            # Get the bot's response from the chatbot logic module.
             response_text = chatbot_response(user_message, session)
             
-            # Send the response back to the user
+            # Send the response back to the user.
             background_tasks.add_task(send_reply_to_goftino, chat_id, response_text)
 
     return Response(status_code=204)
