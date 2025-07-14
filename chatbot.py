@@ -182,19 +182,19 @@ else:
         # 6. MAIN CHATBOT PIPELINE
         # This function connects intent detection to the appropriate handler.
         # =================================================================
-        def chatbot_response(user_input: str, session: dict):
+        def chatbot_response(user_input: str):
             """
             The main function that routes user input to the correct handler using session state.
             """
             # First, check if user information has been collected from the session
-            if not session.get("info_collected"):
-                if session.get("name") is None:
-                    session["name"] = user_input.strip()
-                    return "متشکرم، لطفا شماره تلفن خود را وارد کنید:"
-                elif session.get("phone_number") is None:
-                    session["phone_number"] = user_input.strip()
-                    session["info_collected"] = True
-                    return f"سلام {session['name']}! شماره تلفن شما ({session['phone_number']}) ثبت شد. حالا چگونه می‌توانم به شما کمک کنم؟"
+            # if not session.get("info_collected"):
+            #     if session.get("name") is None:
+            #         session["name"] = user_input.strip()
+            #         return "متشکرم، لطفا شماره تلفن خود را وارد کنید:"
+            #     elif session.get("phone_number") is None:
+            #         session["phone_number"] = user_input.strip()
+            #         session["info_collected"] = True
+            #         return f"سلام {session['name']}! شماره تلفن شما ({session['phone_number']}) ثبت شد. حالا چگونه می‌توانم به شما کمک کنم؟"
 
             # If user information is collected, proceed with intent detection
             intent = detect_intent(user_input)
