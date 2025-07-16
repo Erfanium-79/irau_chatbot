@@ -1,5 +1,5 @@
 # =================================================================
-# main.py (FINAL PRODUCTION VERSION v5.0)
+# main.py (FINAL PRODUCTION VERSION v5.1 with Typing Indicator)
 # =================================================================
 import uvicorn
 import os
@@ -17,8 +17,8 @@ logging.basicConfig(level=logging.INFO)
 # =================================================================
 app = FastAPI(
     title="Chatbot API for Goftino",
-    description="An API to interact with the chatbot via Goftino, now simplified.",
-    version="5.0.0"
+    description="An API to interact with the chatbot via Goftino, now with typing indicator.",
+    version="5.1.0"
 )
 
 # Add CORS middleware to allow requests from your frontend and Goftino
@@ -39,38 +39,68 @@ app.add_middleware(
 
 # Get the Goftino API key from environment variables for security
 GOFTINO_API_KEY = os.environ.get("GOFTINO_API_KEY")
+OPERATOR_ID = os.environ.get("GOFTINO_OPERATOR_ID")
 
-# This is the correct Send Message API URL from the documentation
+
+# API URLs from the Goftino documentation
 GOFTINO_SEND_API_URL = "https://api.goftino.com/v1/send_message"
+# [NEW] Added the URL for the typing status endpoint
+GOFTINO_TYPING_API_URL = "https://api.goftino.com/v1/operator_typing"
 
 # =================================================================
-# 2. HELPER FUNCTION TO SEND MESSAGES
+# 2. HELPER FUNCTIONS TO SEND MESSAGES & STATUS
 # =================================================================
 
 # In-memory dictionary to store session data for each chat.
 chat_sessions = {}
 
 
+# [NEW] Helper function to set the typing status in Goftino
+async def set_typing_status(chat_id: str, is_typing: bool):
+    """
+    Sends a request to Goftino to show or hide the "operator is typing" animation.
+    """
+    if not GOFTINO_API_KEY or not OPERATOR_ID:
+        logging.error("API Key or Operator ID is not set for typing status!")
+        return
+
+    headers = {
+        "Content-Type": "application/json",
+        "goftino-key": GOFTINO_API_KEY
+    }
+
+    payload = {
+        "chat_id": chat_id,
+        "operator_id": OPERATOR_ID,
+        "typing_status": "true" if is_typing else "false"
+    }
+
+    async with httpx.AsyncClient() as client:
+        try:
+            response = await client.post(GOFTINO_TYPING_API_URL, json=payload, headers=headers)
+            response.raise_for_status()
+            logging.info(f"Set typing status to {is_typing} for chat_id {chat_id}.")
+        except httpx.HTTPStatusError as e:
+            logging.error(f"Error setting typing status: {e.response.status_code} - {e.response.text}")
+
+
 async def send_reply_to_goftino(chat_id: str, message: str):
     """
     Sends a reply message to the Goftino "Send Message" API.
     """
-    api_key = os.environ.get("GOFTINO_API_KEY")
-    operator_id = os.environ.get("GOFTINO_OPERATOR_ID")
-
-    if not api_key or not operator_id:
+    if not GOFTINO_API_KEY or not OPERATOR_ID:
         logging.error("API Key or Operator ID is not set in environment variables!")
         return
 
     headers = {
         "Content-Type": "application/json",
-        "goftino-key": api_key
+        "goftino-key": GOFTINO_API_KEY
     }
 
     payload = {
         "chat_id": chat_id,
         "message": message,
-        "operator_id": operator_id
+        "operator_id": OPERATOR_ID
     }
 
     async with httpx.AsyncClient() as client:
@@ -104,38 +134,40 @@ async def chat_with_bot(request: Request, background_tasks: BackgroundTasks):
 
     # If this is the first time we see this user, create a session and welcome them.
     if session is None:
-        # Extract user info from the webhook payload (e.g., from the 'sender' object)
         sender_info = data.get("sender", {})
         user_name = sender_info.get("name")
         user_phone = sender_info.get("phone")
 
         logging.info(f"New conversation for chat_id: {chat_id}. User: {user_name}, Phone: {user_phone}")
         
-        # Create a new session and store the user's info from Goftino
         session = {
             "name": user_name,
             "phone_number": user_phone,
         }
         chat_sessions[chat_id] = session
         
-        # The bot now sends a simple, direct welcome message.
         initial_prompt = "سلام! لطفا پیام خود را بنویسید."
         
         background_tasks.add_task(send_reply_to_goftino, chat_id, initial_prompt)
         
-        # We have initiated the conversation. Stop processing here and wait for the user's reply.
         return Response(status_code=204)
 
-    # For subsequent messages from the user, process them directly.
+    # [MODIFIED] For subsequent messages, handle the typing indicator
     if event == "new_message" and data.get("type") == "text" and data.get("sender", {}).get("from") == "user":
         user_message = data.get("content")
         if user_message:
             logging.info(f"Processing message from existing chat {chat_id}: '{user_message}'")
             
-            # Get the bot's response from the chatbot logic module.
+            # 1. Show "operator is typing..." animation
+            await set_typing_status(chat_id, is_typing=True)
+            
+            # 2. Get the bot's response. The typing animation is active during this process.
             response_text = chatbot_response(user_message)
             
-            # Send the response back to the user.
+            # 3. Stop the "typing..." animation just before sending the reply.
+            await set_typing_status(chat_id, is_typing=False)
+
+            # 4. Send the final response back to the user in a background task.
             background_tasks.add_task(send_reply_to_goftino, chat_id, response_text)
 
     return Response(status_code=204)
