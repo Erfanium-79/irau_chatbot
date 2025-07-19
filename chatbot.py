@@ -207,8 +207,8 @@ else:
                 return handle_visitor_info(user_input)
             elif intent == "faq":
                 return handle_visitor_info(user_input)
-            elif intent == "complaint":
-                return handle_complaint(user_input)
+            # elif intent == "complaint":
+            #     return handle_complaint(user_input)
             elif intent == "chitchat":
                 # For chitchat, we can try to use the LLM directly for a general response in Persian
                 prompt = f"""
@@ -218,7 +218,7 @@ else:
                 response = llm.invoke([HumanMessage(content=prompt)])
                 return response.content.strip()
             else: # Handles 'unknown'
-                return "من هنوز مطمئن نیستم چگونه به شما در این مورد کمک کنم. سعی کنید سوالی در مورد خدمات یا قیمت‌های ما بپرسید."
+                return -1
 
     except Exception as e:
         # If anything goes wrong, the error will be printed.
