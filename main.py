@@ -36,7 +36,7 @@ app.add_middleware(
 # Goftino Configuration
 GOFTINO_API_KEY = os.environ.get("GOFTINO_API_KEY")
 OPERATOR_ID = os.environ.get("GOFTINO_OPERATOR_ID")  # The Chatbot's Operator ID
-SECOND_OPERATOR_ID = "68726fa2d79ebf4c3130a5a6"      # The Human Operator's ID
+SECOND_OPERATOR_ID = "687c9153c7b2788949dda73c"      # The Human Operator's ID
 
 # API URLs
 GOFTINO_SEND_API_URL = "https://api.goftino.com/v1/send_message"
