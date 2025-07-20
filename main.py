@@ -46,10 +46,23 @@ GOFTINO_TYPING_API_URL = "https://api.goftino.com/v1/operator_typing"
 GOFTINO_TRANSFER_API_URL = "https://api.goftino.com/v1/transfer_chat"
 
 # Redis Configuration
+# ... other imports
+
+# Redis Configuration
 REDIS_HOST = os.environ.get("REDIS_HOST", "localhost")
 REDIS_PORT = int(os.environ.get("REDIS_PORT", 6379))
-redis_client = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, db=0, decode_responses=True)
-logging.info(f"Connected to Redis at {REDIS_HOST}:{REDIS_PORT}")
+# Add this line to get the password
+REDIS_PASSWORD = os.environ.get("REDIS_PASSWORD", None) 
+
+# Create a Redis client instance
+redis_client = redis.Redis(
+    host=REDIS_HOST,
+    port=REDIS_PORT,
+    password=REDIS_PASSWORD,  # <-- Add this password argument
+    db=0,
+    decode_responses=True
+)
+logging.info(f"Configured Redis client for host {REDIS_HOST}:{REDIS_PORT}")
 
 # =================================================================
 # 2. HELPER FUNCTIONS
