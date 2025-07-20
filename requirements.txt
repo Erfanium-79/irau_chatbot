@@ -6,4 +6,6 @@ streamlit
 fastapi
 uvicorn
 httpx
+redis
+jason
 # Add any other libraries your app needs
