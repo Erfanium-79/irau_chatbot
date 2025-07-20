@@ -40,7 +40,7 @@ app.add_middleware(
 # Get the Goftino API key from environment variables for security
 GOFTINO_API_KEY = os.environ.get("GOFTINO_API_KEY")
 OPERATOR_ID = os.environ.get("GOFTINO_OPERATOR_ID")
-SECOND_OPERATOR_ID = "68726fa2d79ebf4c3130a5a6" # The ID of the operator to transfer to
+SECOND_OPERATOR_ID = "687c9153c7b2788949dda73c" # The ID of the operator to transfer to
 
 # API URLs from the Goftino documentation
 GOFTINO_SEND_API_URL = "https://api.goftino.com/v1/send_message"
