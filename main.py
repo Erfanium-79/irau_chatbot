@@ -135,6 +135,7 @@ async def chat_with_bot(request: Request, background_tasks: BackgroundTasks):
         return Response(status_code=204)
 
     # Process new text messages from the user
+# Process new text messages from the user
     if event == "new_message" and data.get("type") == "text" and data.get("sender", {}).get("from") == "user":
         user_message = data.get("content")
         if not user_message: return Response(status_code=204)
@@ -144,14 +145,19 @@ async def chat_with_bot(request: Request, background_tasks: BackgroundTasks):
         await set_typing_status(chat_id, is_typing=False)
 
         if response_text == -1:
-            logging.info(f"Bot returned -1. Transferring chat {chat_id} to human: {SECOND_OPERATOR_ID}.")
-            # [MODIFIED] Update session state for transfer
+            # [FIX] First, send a message to the user to establish the bot's presence and inform the user.
+            preamble_message = "متوجه شدم. لطفاً چند لحظه صبر کنید تا شما را به یک اپراتور انسانی وصل کنم."
+            background_tasks.add_task(send_reply_to_goftino, chat_id, preamble_message)
+
+            # Second, update the session state.
+            logging.info(f"Bot returned -1. Transferring chat {chat_id} to human operator: {SECOND_OPERATOR_ID}.")
             session["is_transferred"] = True
-            session["human_operator_id"] = SECOND_OPERATOR_ID # Store human's ID
+            session["human_operator_id"] = SECOND_OPERATOR_ID
             
-            # [MODIFIED] Use the new generic transfer function
+            # Finally, perform the transfer.
             background_tasks.add_task(transfer_chat, chat_id, from_operator=OPERATOR_ID, to_operator=SECOND_OPERATOR_ID)
         else:
+            # If no transfer is needed, just send the bot's response.
             background_tasks.add_task(send_reply_to_goftino, chat_id, response_text)
 
     return Response(status_code=204)
