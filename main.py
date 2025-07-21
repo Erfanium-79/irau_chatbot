@@ -50,18 +50,18 @@ GOFTINO_TRANSFER_API_URL = "https://api.goftino.com/v1/transfer_chat"
 # =================================================================
 # 2. HELPER FUNCTIONS
 # =================================================================
-async def transfer_chat(chat_id: str, to_operator: str):
-    """Transfers a chat to a specified operator."""
-    if not all([GOFTINO_API_KEY, to_operator]):
-        logging.error("API Key or target Operator ID are missing for transfer!")
+async def transfer_chat(chat_id: str, from_operator: str, to_operator: str):
+    """Transfers a chat from one operator to another."""
+    if not all([GOFTINO_API_KEY, from_operator, to_operator]):
+        logging.error("API Key, from_operator, or to_operator ID is missing for transfer!")
         return
     headers = {"Content-Type": "application/json", "goftino-key": GOFTINO_API_KEY}
-    payload = {"chat_id": chat_id, "to_operator": to_operator}
+    payload = {"chat_id": chat_id, "from_operator": from_operator, "to_operator": to_operator} # Corrected payload
     async with httpx.AsyncClient() as client:
         try:
             response = await client.post(GOFTINO_TRANSFER_API_URL, json=payload, headers=headers)
             response.raise_for_status()
-            logging.info(f"Successfully initiated transfer for chat {chat_id} to operator {to_operator}.")
+            logging.info(f"Successfully initiated transfer for chat {chat_id} from {from_operator} to {to_operator}.")
         except httpx.HTTPStatusError as e:
             logging.error(f"Error transferring chat: {e.response.status_code} - {e.response.text}")
 
@@ -131,7 +131,7 @@ async def chat_webhook(request: Request, background_tasks: BackgroundTasks):
             
             preamble_message = "متوجه شدم. لطفاً چند لحظه صبر کنید تا شما را به یک اپراتور انسانی وصل کنم."
             background_tasks.add_task(send_reply_to_goftino, chat_id, preamble_message)
-            background_tasks.add_task(transfer_chat, chat_id, to_operator=HUMAN_OPERATOR_ID)
+            background_tasks.add_task(transfer_chat, chat_id, from_operator=BOT_OPERATOR_ID, to_operator=HUMAN_OPERATOR_ID)
         else:
             background_tasks.add_task(send_reply_to_goftino, chat_id, response_text)
 
