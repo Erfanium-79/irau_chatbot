@@ -1,12 +1,10 @@
 # =================================================================
-# main.py (FINAL PRODUCTION VERSION v9.3 with URL-based Redis Connection)
+# main.py (Stateless Version - No Redis)
 # =================================================================
 import uvicorn
 import os
 import httpx
 import logging
-import redis
-import json
 from fastapi import FastAPI, Request, Response, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
 from chatbot import chatbot_response
@@ -22,8 +20,8 @@ logging.basicConfig(
 # =================================================================
 app = FastAPI(
     title="Chatbot API for Goftino",
-    description="An API for a stateful chatbot with automated transfer to/from human operators.",
-    version="9.3.0"
+    description="An API for a stateless chatbot with automated transfer to/from human operators.",
+    version="10.0.0"
 )
 
 # CORS middleware
@@ -47,24 +45,6 @@ HUMAN_OPERATOR_ID = "687c9153c7b2788949dda73c"      # The Human Operator's ID
 GOFTINO_SEND_API_URL = "https://api.goftino.com/v1/send_message"
 GOFTINO_TYPING_API_URL = "https://api.goftino.com/v1/operator_typing"
 GOFTINO_TRANSFER_API_URL = "https://api.goftino.com/v1/transfer_chat"
-
-# Simplified Redis configuration to use a single URL
-REDIS_URL = os.environ.get("REDIS_URL")
-
-# Create a Redis client instance
-redis_client = None
-if REDIS_URL:
-    try:
-        # Use from_url to connect using the single connection string
-        redis_client = redis.from_url(REDIS_URL, decode_responses=True)
-        # Ping the server to check the connection
-        redis_client.ping()
-        logging.info("Successfully connected to Redis using the provided URL.")
-    except redis.exceptions.ConnectionError as e:
-        logging.error(f"Could not connect to Redis using the provided URL: {e}")
-        redis_client = None
-else:
-    logging.error("REDIS_URL environment variable not set. Redis connection not established.")
 
 
 # =================================================================
@@ -114,12 +94,8 @@ async def send_reply_to_goftino(chat_id: str, message: str):
 # =================================================================
 @app.post("/chat/")
 async def chat_webhook(request: Request, background_tasks: BackgroundTasks):
-    if not redis_client:
-        logging.error("Redis is not available. Cannot process request.")
-        return Response(status_code=503, content="Service Unavailable: Redis connection failed.")
-
     webhook_data = await request.json()
-    logging.info(f"Received webhook: {json.dumps(webhook_data, indent=2)}")
+    logging.info(f"Received webhook: {webhook_data}")
 
     event = webhook_data.get("event")
     data = webhook_data.get("data", {})
