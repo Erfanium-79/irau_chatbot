@@ -48,8 +48,7 @@ GOFTINO_SEND_API_URL = "https://api.goftino.com/v1/send_message"
 GOFTINO_TYPING_API_URL = "https://api.goftino.com/v1/operator_typing"
 GOFTINO_TRANSFER_API_URL = "https://api.goftino.com/v1/transfer_chat"
 
-# ### CHANGE ### - Simplified Redis configuration to use a single URL
-# This is more reliable and easier to configure in a production environment.
+# Simplified Redis configuration to use a single URL
 REDIS_URL = os.environ.get("REDIS_URL")
 
 # Create a Redis client instance
@@ -130,28 +129,7 @@ async def chat_webhook(request: Request, background_tasks: BackgroundTasks):
         logging.warning("Webhook received without a chat_id.")
         return Response(status_code=204)
 
-    # Load session state from Redis
-    session_key = f"chat_session:{chat_id}"
-    session_json = redis_client.get(session_key)
-    session = json.loads(session_json) if session_json else {"is_with_human": False}
-
-    # --- Event Handling Logic ---
-
-    # 1. Handle chat 'closed' event to reset the state
-    # if event == "chat_status_changed" and data.get("chat_status") == "closed":
-    #     closing_operator = data.get("operator_id")
-    #     logging.info(f"Chat {chat_id} was closed by operator {closing_operator}.")
-        
-    #     if session.get("is_with_human"):
-    #         logging.info(f"Resetting state for chat {chat_id}. Next message will go to the bot.")
-    #         session["is_with_human"] = False
-    #         redis_client.set(session_key, json.dumps(session))
-    #     return Response(status_code=204)
-
-    # 2. Handle new messages from the user
-# main.py - REVISED LOGIC
-
-    # 2. Handle new messages from the user
+    # Handle new messages from the user
     if event == "new_message" and data.get("sender", {}).get("from") == "user":
         user_message = data.get("content")
         current_operator_id = data.get("operator_id")
@@ -171,12 +149,8 @@ async def chat_webhook(request: Request, background_tasks: BackgroundTasks):
         response_text = chatbot_response(user_message)
         await set_typing_status(chat_id, is_typing=False)
 
-        # main.py - REVISED
-
         if response_text == -1:
             logging.info(f"Bot returned -1. Transferring chat {chat_id} to human operator: {HUMAN_OPERATOR_ID}.")
-            
-            # The session management lines have been removed.
             
             preamble_message = "متوجه شدم. لطفاً چند لحظه صبر کنید تا شما را به یک اپراتور انسانی وصل کنم."
             background_tasks.add_task(send_reply_to_goftino, chat_id, preamble_message)
