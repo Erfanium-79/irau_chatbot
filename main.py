@@ -90,7 +90,7 @@ async def send_reply_to_goftino(chat_id: str, message: str):
             logging.error(f"Error sending message to Goftino: {e.response.status_code} - {e.response.text}")
 
 # =================================================================
-# 3. MAIN WEBHOOK ENDPOINT
+# 3. MAIN WEBHOOK ENDPOINT (REVISED LOGIC)
 # =================================================================
 @app.post("/chat/")
 async def chat_webhook(request: Request, background_tasks: BackgroundTasks):
@@ -108,17 +108,18 @@ async def chat_webhook(request: Request, background_tasks: BackgroundTasks):
     # Handle new messages from the user
     if event == "new_message" and data.get("sender", {}).get("from") == "user":
         user_message = data.get("content")
-        current_operator_id = data.get("operator_id")
+        current_operator_id = data.get("operator_id") # This will be None for new chats
 
         if not user_message or data.get("type") != "text":
-            return Response(status_code=204) # Ignore non-text messages
-
-        # --- THIS IS THE KEY CHANGE ---
-        # Only respond if the message is assigned to the BOT.
-        if current_operator_id != BOT_OPERATOR_ID:
-            logging.info(f"Chat {chat_id} is assigned to operator {current_operator_id}. Bot will not intervene.")
             return Response(status_code=204)
 
+        # --- THIS IS THE KEY LOGIC CHANGE ---
+        # The bot should NOT intervene ONLY IF an operator is assigned AND that operator is NOT the bot.
+        if current_operator_id and current_operator_id != BOT_OPERATOR_ID:
+            logging.info(f"Chat {chat_id} is assigned to human operator {current_operator_id}. Bot will not intervene.")
+            return Response(status_code=204)
+
+        # If the code reaches here, it means the chat is new (operator is None) or assigned to the bot.
         logging.info(f"Bot ({BOT_OPERATOR_ID}) is processing message for chat {chat_id}: '{user_message}'")
         
         await set_typing_status(chat_id, is_typing=True)
