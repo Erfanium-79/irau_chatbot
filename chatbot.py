@@ -107,6 +107,7 @@ else:
         - complaint
         - visitor_info
         - chitchat
+        - unrelated to the iran-australia institute
         - unknown
         avoid the unknown category as much as possible
         Input: "{user_input}"
@@ -164,6 +165,10 @@ else:
             except Exception as e:
                 return f"متاسفم، در حال حاضر نمی‌توانم به سوال شما پاسخ دهم. لطفاً بعداً دوباره امتحان کنید. خطای رخ داده: {e}"
 
+        def handle_unrelated(query: str):
+                    return "متأسفم، من اطلاعاتی در این باره ندارم زیرا مأموریت من ارائه اطلاعات و خدمات مرتبط با موسسه زبان ایران استرالیا است. اگر سؤالی درباره یادگیری زبان انگلیسی یا خدمات موسسه ایران استرالیا دارید، خوشحال می‌شوم کمک کنم!"
+
+
         def handle_complaint(query: str):
             """Handles complaint intent, logging to complaints.csv with user details, in Persian."""
             global user_name, user_phone_number
@@ -207,8 +212,8 @@ else:
                 return handle_visitor_info(user_input)
             elif intent == "faq":
                 return handle_visitor_info(user_input)
-            # elif intent == "complaint":
-            #     return handle_complaint(user_input)
+            elif intent == "unrelated":
+                return handle_unrelated(user_input)
             elif intent == "chitchat":
                 # For chitchat, we can try to use the LLM directly for a general response in Persian
                 prompt = f"""
