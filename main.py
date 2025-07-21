@@ -138,37 +138,45 @@ async def chat_webhook(request: Request, background_tasks: BackgroundTasks):
     # --- Event Handling Logic ---
 
     # 1. Handle chat 'closed' event to reset the state
-    if event == "chat_status_changed" and data.get("chat_status") == "closed":
-        closing_operator = data.get("operator_id")
-        logging.info(f"Chat {chat_id} was closed by operator {closing_operator}.")
+    # if event == "chat_status_changed" and data.get("chat_status") == "closed":
+    #     closing_operator = data.get("operator_id")
+    #     logging.info(f"Chat {chat_id} was closed by operator {closing_operator}.")
         
-        if session.get("is_with_human"):
-            logging.info(f"Resetting state for chat {chat_id}. Next message will go to the bot.")
-            session["is_with_human"] = False
-            redis_client.set(session_key, json.dumps(session))
-        return Response(status_code=204)
+    #     if session.get("is_with_human"):
+    #         logging.info(f"Resetting state for chat {chat_id}. Next message will go to the bot.")
+    #         session["is_with_human"] = False
+    #         redis_client.set(session_key, json.dumps(session))
+    #     return Response(status_code=204)
+
+    # 2. Handle new messages from the user
+# main.py - REVISED LOGIC
 
     # 2. Handle new messages from the user
     if event == "new_message" and data.get("sender", {}).get("from") == "user":
         user_message = data.get("content")
+        current_operator_id = data.get("operator_id")
+
         if not user_message or data.get("type") != "text":
+            return Response(status_code=204) # Ignore non-text messages
+
+        # --- THIS IS THE KEY CHANGE ---
+        # Only respond if the message is assigned to the BOT.
+        if current_operator_id != BOT_OPERATOR_ID:
+            logging.info(f"Chat {chat_id} is assigned to operator {current_operator_id}. Bot will not intervene.")
             return Response(status_code=204)
 
-        if session.get("is_with_human"):
-            logging.info(f"Chat {chat_id} is with a human. Bot is ignoring the message.")
-            return Response(status_code=204)
-
-        logging.info(f"Bot is processing message for chat {chat_id}: '{user_message}'")
+        logging.info(f"Bot ({BOT_OPERATOR_ID}) is processing message for chat {chat_id}: '{user_message}'")
         
         await set_typing_status(chat_id, is_typing=True)
         response_text = chatbot_response(user_message)
         await set_typing_status(chat_id, is_typing=False)
 
+        # main.py - REVISED
+
         if response_text == -1:
             logging.info(f"Bot returned -1. Transferring chat {chat_id} to human operator: {HUMAN_OPERATOR_ID}.")
             
-            session["is_with_human"] = True
-            redis_client.set(session_key, json.dumps(session))
+            # The session management lines have been removed.
             
             preamble_message = "متوجه شدم. لطفاً چند لحظه صبر کنید تا شما را به یک اپراتور انسانی وصل کنم."
             background_tasks.add_task(send_reply_to_goftino, chat_id, preamble_message)
