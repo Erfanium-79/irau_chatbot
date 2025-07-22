@@ -155,10 +155,54 @@ iran-australia.com
 آدرس: میدان ولیعصر - ضلع شمال میدان به سمت راست - کوچه شهید ملایی - پلاک 3
 تلفن تماس: 57207-021
 
-### توضیحات درباره انواع دوره ها
+Based on the provided text, the Iran-Australia Institute offers a variety of English language courses tailored to different needs, schedules, and age groups. The programs are structured with specific materials, durations, and placement procedures to accommodate students aiming for goals such as immigration, employment, or general language acquisition.
 
-دوره ها را به روش های مختلف میتوان تقسیم کرد. برای مثال تقسیم بندی به صورت سنی که بالای 
-شانزده سال یا زیر شانزده سال را در نظر میگیرد.
+### Course Structures and Schedules
 
-دوره های بزرگسالان که افراد بالای 16 سال را شامل میشود، از نظر فرم به 4 نوع تقسیم میشوند. فارغ از سطح دوره، هر دوره بزرگسال به 4 صورت 
+The institute provides several course formats:
 
+* [cite_start]**Intensive Courses (دوره های فشرده):** These are designed for individuals who need to learn the language quickly, such as for immigration or job requirements[cite: 2]. [cite_start]Classes run from Saturday to Wednesday for four hours daily[cite: 2]. [cite_start]It takes approximately six months to reach a level suitable for IELTS preparation in this format[cite: 3, 7]. [cite_start]The certificate provided at the end of this course is issued by the Ministry of Science and is translatable[cite: 2].
+
+* [cite_start]**Semi-Intensive Courses (دوره های نیمه فشرده):** This option is for students who are unable to commit to the intensive schedule[cite: 5]. [cite_start]Classes are typically held on even-numbered days of the week (e.g., Saturday, Monday, Wednesday)[cite: 5]. [cite_start]The total duration to advance from a basic level to being ready for the IELTS exam is about 10 months[cite: 8, 9].
+
+* [cite_start]**Regular Courses (دوره های عادی):** These courses proceed at a slower pace, involving three sessions per week, with each session lasting one hour and forty-five minutes[cite: 10]. [cite_start]The entire program from beginner to advanced level takes 24 months to complete[cite: 11].
+
+* [cite_start]**Two-Days-a-Week Courses:** To reduce travel time, students can opt for classes held twice a week in longer sessions (2.5 hours each) instead of three times a week[cite: 33]. [cite_start]This format offers flexibility with various possible day combinations[cite: 33, 34].
+
+---
+
+### Curriculum and Textbooks
+
+The institute uses a combination of proprietary and standard materials:
+
+* [cite_start]**Exclusive Books:** The core curriculum is taught using the institute's exclusive "Roadmap" and "Page" series of books[cite: 36].
+* [cite_start]**Guideline Texts:** The "Four Corners" series by Jack C. Richards is used as a supplementary guideline but is not the primary textbook[cite: 36, 37].
+* [cite_start]**Framework:** The teaching methodology is based on the Common European Framework of Reference for Languages (CEFR) model[cite: 46].
+* [cite_start]**Children's Books:** Courses for younger learners use age-appropriate books such as "Start-up" and "Ship"[cite: 43].
+
+---
+
+### Student Placement and Evaluation
+
+A structured process is in place to ensure students are placed in the correct level:
+
+* [cite_start]**Placement Test:** All adult students, regardless of their prior experience, are encouraged to take a placement test that includes written and oral components[cite: 38]. [cite_start]For teenagers and children, the assessment is only oral[cite: 38].
+* [cite_start]**Initial Evaluation:** The initial placement is considered a preliminary judgment[cite: 39]. [cite_start]Instructors conduct a more thorough evaluation during the first five sessions of the course[cite: 39].
+* [cite_start]**Level Adjustment:** Based on this in-class evaluation, a student may be moved to a higher or lower level to ensure they are in the most suitable learning environment[cite: 40]. [cite_start]The institute emphasizes its commitment to finding the best fit for each student[cite: 40].
+
+---
+
+### Flexibility and Customization
+
+The institute adapts its programs to individual student needs and learning paces:
+
+* **Pacing:** The speed of instruction can be adjusted for a student's ability. [cite_start]For example, a highly proficient student may complete a textbook in 30 sessions instead of the standard 36, with the course fee adjusted accordingly[cite: 14, 15, 16].
+* [cite_start]**Needs-Based Learning:** The institute focuses on tailoring education to meet specific student goals, citing successful outcomes such as helping students achieve an IELTS score of 6.5 for immigration purposes[cite: 26, 28].
+
+---
+
+### Courses for Children
+
+Specialized programs are available for children, who are divided into different age groups:
+* [cite_start]**Age Groups:** 4-6 years, 6-8 years, and 8-10 years old[cite: 44].
+* [cite_start]**Scheduling:** Classes are offered on various schedules, including once a week (Thursday or Friday) or twice a week[cite: 41].
