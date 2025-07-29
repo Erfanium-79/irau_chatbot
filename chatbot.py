@@ -55,11 +55,11 @@ else:
         )
 
         # Initialize OpenAIEmbeddings, pointing to the AvalAI base_url
-        embeddings = OpenAIEmbeddings(
-            model="text-embedding-3-small",
-            api_key=AVALAI_API_KEY,
-            base_url=AVALAI_BASE_URL
-        )
+        # embeddings = OpenAIEmbeddings(
+        #     model="text-embedding-3-small",
+        #     api_key=AVALAI_API_KEY,
+        #     base_url=AVALAI_BASE_URL
+        # )
 
         # =================================================================
         # 3. LOAD VECTOR STORE AND SETUP RETRIEVER/QA CHAIN
@@ -108,7 +108,7 @@ else:
         - visitor_info
         - chitchat
         - unrelated to the iran-australia institute
-        - unknown
+        - unknown 
         avoid the unknown category as much as possible
         Input: "{user_input}"
         Intent:"""
