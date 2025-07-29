@@ -1,10 +1,10 @@
 
-### روزهای کاری موسسه/شرکت
+### روزهای کاری مدرسه/شرکت
 شنبه تا پنجشنبه ساعت 9 صبح الی 9 شب، جمعه ها تعطیل است.
 
 
 ### اطلاعات عمومی
-موسسه زبان ایران‑استرالیا یکی از معتبرترین مؤسسات آموزش زبان انگلیسی در تهران است. این مؤسسه با بیش از ۲۰ سال سابقه، در چند شعبه در نقاط مختلف پایتخت فعالیت می‌کند/ دوره‌های عمومی و مکالمه (Pre‑IELTS) با گزینه‌های فشرده، نیمه‌فشرده و حتی کلاس‌های روزانه 
+مدرسه زبان ایران‑استرالیا یکی از معتبرترین مؤسسات آموزش زبان انگلیسی در تهران است. این مؤسسه با بیش از ۲۰ سال سابقه، در چند شعبه در نقاط مختلف پایتخت فعالیت می‌کند/ دوره‌های عمومی و مکالمه (Pre‑IELTS) با گزینه‌های فشرده، نیمه‌فشرده و حتی کلاس‌های روزانه 
 iran-australia.com
 +1
 instagram.com
@@ -30,9 +30,9 @@ iran-australia.com
 
 آموزش تربیت مدرس (TTC)، آزمون‌های کمکی مثل PTE، CELPIP، GRE، و …
 
-[![موسسه زبان ایران استراليا بهجت آباد ...](https://images.openai.com/thumbnails/c83b721f042cc15d34c496a629d2543e.jpeg)](https://neshan.org/maps/places/0350e0d092b0418f37739fcb3083544a)
+[![مدرسه زبان ایران استراليا بهجت آباد ...](https://images.openai.com/thumbnails/c83b721f042cc15d34c496a629d2543e.jpeg)](https://neshan.org/maps/places/0350e0d092b0418f37739fcb3083544a)
 
-موسسه زبان **ایران‑استرالیا** یکی از معتبرترین مؤسسات آموزش زبان انگلیسی در تهران است. این مؤسسه با بیش از ۲۰ سال سابقه، در چند شعبه در نقاط مختلف پایتخت فعالیت می‌کند ([iran-australia.com][1]).
+مدرسه زبان **ایران‑استرالیا** یکی از معتبرترین مؤسسات آموزش زبان انگلیسی در تهران است. این مؤسسه با بیش از ۲۰ سال سابقه، در چند شعبه در نقاط مختلف پایتخت فعالیت می‌کند ([iran-australia.com][1]).
 
 ---
 
@@ -76,7 +76,7 @@ iran-australia.com
 
 ## سایر شعب
 
-علاوه بر بهجت‌آباد، این موسسه در **ولیعصر، مرزداران، رسالت، فرجام و شعبه آنلاین** نیز فعالیت دارد ([iran-australia.com][2]).
+علاوه بر بهجت‌آباد، این مدرسه در **ولیعصر، مرزداران، رسالت، فرجام و شعبه آنلاین** نیز فعالیت دارد ([iran-australia.com][2]).
 
 ---
 
@@ -89,7 +89,7 @@ iran-australia.com
 
 ## توصیه‌ها به شما
 
-* اگر هدف‌تان **آزمون IELTS** با پشتیبانی و تضمین موفقیت باشد، این موسسه انتخاب بسیار مناسبی است.
+* اگر هدف‌تان **آزمون IELTS** با پشتیبانی و تضمین موفقیت باشد، این مدرسه انتخاب بسیار مناسبی است.
 * هزینه‌ها متوسط بوده ولی حجم ترم بالا است؛ بررسی کنید سبک آموزشی و حجم دروس با زمان شما سازگار باشد.
 * بررسی کنید امکان جابه‌جایی استاد وجود دارد تا از تجربه‌ی مناسب‌تری برخوردار شوید.
 
@@ -99,11 +99,11 @@ iran-australia.com
 
 [1]: https://www.iran-australia.com/en/main.html?utm_source=chatgpt.com "Iran-Australia"
 [2]: https://www.iran-australia.com/?utm_source=chatgpt.com "مدرسه زبان ایران استرالیا"
-[3]: https://neshan.org/maps/places/0350e0d092b0418f37739fcb3083544a?utm_source=chatgpt.com "موسسه زبان ایران استراليا بهجت آباد ..."
-[4]: https://www.iraust.org/?utm_source=chatgpt.com "موسسه فرهنگی هنری ایران استرالیا: صفحه اصلی"
+[3]: https://neshan.org/maps/places/0350e0d092b0418f37739fcb3083544a?utm_source=chatgpt.com "مدرسه زبان ایران استراليا بهجت آباد ..."
+[4]: https://www.iraust.org/?utm_source=chatgpt.com "مدرسه فرهنگی هنری ایران استرالیا: صفحه اصلی"
 
 
-موسسه زبان ایران استرالیا یکی از شناخته‌شده‌ترین مراکز آموزش زبان انگلیسی در تهران است که از سال ۱۳۸۱ فعالیت خود را آغاز کرده و تمرکز ویژه‌ای روی آموزش تخصصی آیلتس (IELTS) و دوره‌های زبان عمومی دارد. این مؤسسه با داشتن بیش از ۵ شعبه فعال و زیرساخت مدرن، توانسته جایگاه خوبی میان زبان‌آموزان ایرانی به‌دست آورد.
+مدرسه زبان ایران استرالیا یکی از شناخته‌شده‌ترین مراکز آموزش زبان انگلیسی در تهران است که از سال ۱۳۸۱ فعالیت خود را آغاز کرده و تمرکز ویژه‌ای روی آموزش تخصصی آیلتس (IELTS) و دوره‌های زبان عمومی دارد. این مؤسسه با داشتن بیش از ۵ شعبه فعال و زیرساخت مدرن، توانسته جایگاه خوبی میان زبان‌آموزان ایرانی به‌دست آورد.
 
 ### ویژگی‌های تخصصی دیگر:
 
@@ -129,11 +129,11 @@ iran-australia.com
 🌐 [iran-australia.com](https://iran-australia.com)
 
 ### مراحل ثبت نام
-برای ثبت نام ابتدا باید آزمون تعیین سطح رزرو کنید، این آزمون فقط در روزهای پنجشنبه از ساعت 10 صبح الی 5 بعد از ظهر برگذار میشود. پس از رزرو آزمون تعیین سطح و تعیین سطح در موسسه به صورت حضوری در روز پنجشنبه سطح شما تعیین شده و منطبق بر سطح تعیین شده میتوانید در کلاس مناسب خود ثبت نام کنید.
+برای ثبت نام ابتدا باید آزمون تعیین سطح رزرو کنید، این آزمون فقط در روزهای پنجشنبه از ساعت 10 صبح الی 5 بعد از ظهر برگذار میشود. پس از رزرو آزمون تعیین سطح و تعیین سطح در مدرسه به صورت حضوری در روز پنجشنبه سطح شما تعیین شده و منطبق بر سطح تعیین شده میتوانید در کلاس مناسب خود ثبت نام کنید.
 
-تمامی مراحل ثبت نام و رزرو آزمون تعیین سطح و باقی موارد به صورت کاملا الکترونیکی نیز انجام میشود و برای تشویق شما زبان آموز گرامی تخفیف 15 درصدی برای کسانی که به صورت الکترونیکی و از طریق وبسایت موسسه ثبت نام میکنند در نظر گرفته شده. به این منظور میتوانید به وبسایت [text](https://edu.iran-australia.com/login) مراجعه کرده و روی گزینه ثبت نام زبان آموز جدید کلیک کنید.
+تمامی مراحل ثبت نام و رزرو آزمون تعیین سطح و باقی موارد به صورت کاملا الکترونیکی نیز انجام میشود و برای تشویق شما زبان آموز گرامی تخفیف 15 درصدی برای کسانی که به صورت الکترونیکی و از طریق وبسایت مدرسه ثبت نام میکنند در نظر گرفته شده. به این منظور میتوانید به وبسایت [text](https://edu.iran-australia.com/login) مراجعه کرده و روی گزینه ثبت نام زبان آموز جدید کلیک کنید.
 
-### آدرس موسسه
+### آدرس مدرسه
 شعبه مرزداران
 
 آدرس: فلکه دوم صادقیه- بزرگراه اشرفی اصفهانی به سمت شمال- جنب کتابخانه اشرفی اصفهانی- پلاک 131
@@ -218,11 +218,11 @@ Specialized programs are available for children, who are divided into different 
 
 گرایش فشرده نیز 64 جلسه در ترم (یک ماه و نیم) میباشد که در همه روزهای هفته جلسات برگذار میشود یعنی از شنبه تا چهارشنبه.
 
-گرایش های آنلاین و خصوصی نیز وجود دارند که برای اطلاعات بیشتر میتوانید با موسسه تماس بگیرید، شماره تلفن: 021-57207
+گرایش های آنلاین و خصوصی نیز وجود دارند که برای اطلاعات بیشتر میتوانید با مدرسه تماس بگیرید، شماره تلفن: 021-57207
 
 
 ### محتوای کلاسها
-در کلاسهای ایران استرالیا کتابهای مختلقی در سطوح مختلف تدریس میشود. مسیر کلی در موسسه ابتدا کتابهای four corners میباشد پس از گذارندن کتابهای four corners کتابهای passages تدریس میشود برای رساندن دانش آموز به سطح B2، در واقع انتظار میرود پس از گذراندن کتابهای four corners و passages دانش آموز تمام و کمال در انتهای سطح B2 قرار بگیرد.
+در کلاسهای ایران استرالیا کتابهای مختلقی در سطوح مختلف تدریس میشود. مسیر کلی در مدرسه ابتدا کتابهای four corners میباشد پس از گذارندن کتابهای four corners کتابهای passages تدریس میشود برای رساندن دانش آموز به سطح B2، در واقع انتظار میرود پس از گذراندن کتابهای four corners و passages دانش آموز تمام و کمال در انتهای سطح B2 قرار بگیرد.
 
 پس از گذراندن این دو کتاب دانش آموز میتواند از بین مسیرهای مختلفی که در پیش رویش قرار میگیرد یکی را انتخاب کند. برای مثال میتواند در مسیر کلاسهای آیلتس ادامه دهد. یا مسیر دوره تربیت مدرس یا TTC را بگذراند. زبان انگلیسی را با هدف یادگیری بیشتر خود زبان ادامه دهد.
 
@@ -249,8 +249,151 @@ Specialized programs are available for children, who are divided into different 
 
 در صورت تمایل پس از پایان کتاب های Passage میتوانید وارد دوره های پیشرفته تر زبان انگلیسی برای دریافت گواهی های FCE , CAE , CPE شوید
 
-برای اطلاع از زمان شروع ثبت نام کلاسها نحوه برگذاری کلایهای آنلاین، شهریه و ... با موسسه تماس بگیرید.
+برای اطلاع از زمان شروع ثبت نام کلاسها نحوه برگذاری کلایهای آنلاین، شهریه و ... با مدرسه تماس بگیرید.
 شماره تماس: 02157207
 
 # نکته ای در مورد تعیین سطح
 گاهی اوقات دانشجو میگوید که من احتیاجی به تعیین سطح ندارم، تا به حال هیچ کلاسی نرفته ام و میخواهم از ابتدا شروع کنم. اما دقت کنید ممکن است شما تا به حال تجربه یادگیری زبان انگلیسی نداشته باشید، اما با حروف زبان انگلیسی یا با محاورات بسیار ساده اولیه آشنایی داشته باشید، مدرسه زبان ایران استرالی به وقت و سرمایه شما اهمیت میدهد، حتی داشتن دانش بسیار پایه و اندک از زبان انگلیسی ممکن از یک یا دو ترم شما را جلو بیندازد. پس حتمن در تعیین سطح بسیار کوتاه و دوستانه ما شرکت کنید تا بتوانیم بهترین خدمات را به شما عرضه کنیم.
+
+
+Here is a structured summary of the provided information about the Iran Australia language school's classes.
+
+### **Class Formats & Pacing**
+
+[cite_start]The school offers two primary class formats: **in-person** and **online**[cite: 1]. [cite_start]For more details on online or private classes, you should contact the school directly[cite: 12].
+
+[cite_start]In-person classes are available at three different speeds to accommodate various schedules[cite: 2, 3]:
+
+* **Regular (عادی)**: The standard pace.
+* [cite_start]**Semi-Intensive (نیمه فشرده)**: Covers twice the material of a regular term[cite: 4].
+* [cite_start]**Intensive (فشرده)**: Covers four times the material of a regular term[cite: 4].
+
+[cite_start]Each academic term lasts for **one and a half months**[cite: 5].
+
+---
+
+### **In-Person Class Details**
+
+#### **Regular Courses (دوره های عادی)**
+* [cite_start]**Schedule Options**: Students can choose from one of three schedules, all of which cover the same total hours[cite: 6, 7]:
+    * [cite_start]Once a week (Thursdays or Fridays) for 18 sessions[cite: 8].
+    * [cite_start]Twice a week (Sundays and Tuesdays) for 11 sessions[cite: 9].
+    * [cite_start]Three times a week (Saturdays, Sundays, and Mondays)[cite: 6].
+* [cite_start]**Book Completion**: It takes 4 terms (6 months) to finish one book[cite: 18, 20].
+
+#### **Semi-Intensive Courses (دوره های نیمه فشرده)**
+* [cite_start]**Schedule**: Classes are held three days a week on even-numbered days of the week[cite: 10].
+* [cite_start]**Session Count**: A term consists of 32 sessions[cite: 10].
+* [cite_start]**Book Completion**: It takes 2 terms (3 months) to finish one book[cite: 20].
+
+#### **Intensive Courses (دوره های فشرده)**
+* [cite_start]**Schedule**: Classes run six days a week, from Saturday to Wednesday[cite: 11].
+* [cite_start]**Session Count**: A term consists of 64 sessions[cite: 11].
+* [cite_start]**Book Completion**: One entire book is completed in a single 1.5-month term[cite: 20].
+
+---
+
+### **Curriculum and Learning Path**
+
+[cite_start]The primary curriculum is designed to take a student to a B2 level of proficiency through two main book series[cite: 13].
+
+#### **1. Foundation Level: Four Corners**
+[cite_start]This series consists of four books, each containing 12 chapters[cite: 17, 18]. [cite_start]After completing a book in the regular course, students take a conversation-focused `Brush-up` course[cite: 21].
+* [cite_start]**Four Corners 1**: Completes the A1 level[cite: 17, 19].
+* [cite_start]**Four Corners 2**: Completes the A2 level[cite: 17].
+* [cite_start]**Four Corners 3**: Completes the B1 level[cite: 17].
+* [cite_start]**Four Corners 4**: Secures the B1 level and introduces slightly more advanced concepts[cite: 17].
+
+#### **2. Advanced Level: Passages**
+[cite_start]After the Four Corners series, students progress to the Passages series to reach the B2 level[cite: 13, 22].
+* [cite_start]This level includes two books: **Passages 1** and **Passages 2**[cite: 21].
+* Each book has 12 chapters. [cite_start]In a regular-paced course, 3 chapters are covered per term[cite: 22]. [cite_start]In a semi-intensive course, 6 chapters are covered per term[cite: 22].
+
+#### **3. Further Study Tracks**
+[cite_start]Upon completing the Passages series, students can pursue several specialized paths[cite: 14, 15, 23]:
+* [cite_start]IELTS Preparation courses[cite: 23].
+* [cite_start]Teacher Training Courses (TTC)[cite: 23].
+* [cite_start]PTE courses (offered exclusively as private classes)[cite: 23].
+* [cite_start]Advanced English courses for **FCE, CAE, and CPE** certifications[cite: 24].
+
+---
+
+### **Placement Test & Contact Information**
+
+* **Placement Test**: The school strongly encourages all prospective students, including absolute beginners, to take a short and friendly placement test. [cite_start]This ensures you start at the correct level, which could save you the time and cost of one or two terms[cite: 26, 27].
+* [cite_start]**Contact**: For information regarding registration dates, tuition fees, and online classes, please contact the school[cite: 25].
+    * [cite_start]**Phone Number**: 021-57207 [cite: 12, 25]
+
+
+
+Of course, here is a more detailed and expanded overview of the Iran Australia language school's programs, based on the provided text.
+
+### **Class Formats & Structure**
+
+[cite_start]The Iran Australia language school provides classes in two main categories: in-person and online[cite: 1]. [cite_start]The in-person classes are designed with flexibility in mind, offering three different speeds to accommodate students' varying time commitments[cite: 2]. [cite_start]Each academic term at the school lasts for one and a half months, meaning two terms are held every season[cite: 5].
+
+The three paces for in-person classes are:
+* [cite_start]**Regular (عادی)**: The standard learning speed[cite: 3].
+* [cite_start]**Semi-Intensive (نیمه فشرده)**: This pace covers twice the amount of material in one term as the regular course[cite: 4].
+* [cite_start]**Intensive (فشرده)**: This pace covers double the material of a semi-intensive term, making it four times faster than the regular course[cite: 4].
+
+[cite_start]For detailed information regarding online classes, private lessons, tuition fees, or registration schedules, you are advised to contact the school directly[cite: 12, 24].
+
+---
+
+### **Detailed In-Person Course Schedules**
+
+#### **Regular Courses (دوره های عادی)**
+* [cite_start]**Scheduling Options**: There are three different scheduling formats for regular courses, though the total number of hours studied remains the same for each[cite: 6, 7].
+    * [cite_start]A single day per week, either Thursday or Friday, consisting of 18 total sessions (17 teaching sessions and a final exam)[cite: 8].
+    * [cite_start]Two days per week, on Sundays and Tuesdays, consisting of 11 total sessions (10 teaching sessions and a final exam)[cite: 9].
+    * [cite_start]Three days per week, on Saturdays, Sundays, and Mondays[cite: 6].
+* [cite_start]**Pacing**: In the regular format, 3 chapters of a textbook are covered each term[cite: 18].
+* [cite_start]**Book Completion**: At this pace, finishing one complete book takes four terms, equivalent to six months[cite: 18, 20].
+
+#### **Semi-Intensive Courses (دوره های نیمه فشرده)**
+* [cite_start]**Schedule**: These classes are held three days a week on the even-numbered days[cite: 10].
+* [cite_start]**Session Count**: Each term includes 32 sessions[cite: 10].
+* [cite_start]**Pacing**: 6 chapters from the textbook are covered per term[cite: 22].
+* [cite_start]**Book Completion**: A full book is completed in two terms, or three months[cite: 20].
+
+#### **Intensive Courses (دوره های فشرده)**
+* [cite_start]**Schedule**: Intensive courses run six days a week, from Saturday to Wednesday[cite: 11].
+* [cite_start]**Session Count**: Each term is comprised of 64 sessions[cite: 11].
+* [cite_start]**Pacing**: All 12 chapters of a book are covered in a single term[cite: 22].
+* [cite_start]**Book Completion**: An entire book is completed in just one 1.5-month term[cite: 20].
+
+---
+
+### **Curriculum and Educational Path**
+
+[cite_start]The school's general English curriculum guides students from a beginner level to proficiency, with the goal of reaching a B2 level upon completion of the core program[cite: 13].
+
+#### **1. Foundation Level: Four Corners Series**
+* [cite_start]**Overview**: The initial learning path involves the *Four Corners* series of books[cite: 13]. [cite_start]Each book in this series contains 12 chapters[cite: 18].
+* **Books and Levels**:
+    * [cite_start]**Four Corners 1 (Take off)**: Upon completion, a student will have finished the A1 level[cite: 17, 19].
+    * [cite_start]**Four Corners 2 (Speed Up)**: Upon completion, a student will have finished the A2 level[cite: 17].
+    * [cite_start]**Four Corners 3 (Overtake)**: Upon completion, a student will have finished the B1 level[cite: 17].
+    * [cite_start]**Four Corners 4 (Destination)**: This book ensures the B1 level is fully mastered and covers material slightly beyond it[cite: 17].
+* [cite_start]**Brush-Up Course**: In the regular-paced course, after a student finishes one of the *Four Corners* books, they enter a conversation-focused "Brush-up" course to review and consolidate what they've learned[cite: 21].
+
+#### **2. Advanced Level: Passages Series**
+* [cite_start]**Overview**: After completing all four *Four Corners* books, students who are at a B1 level can enter the advanced stage, which uses the *Passages* book series[cite: 13, 21]. [cite_start]This series consists of two books, *Passages 1* and *Passages 2*[cite: 22].
+* [cite_start]**Goal**: The aim of the *Passages* series is to bring the student to a B2 level of proficiency[cite: 13, 22].
+
+#### **3. Specialized Post-Curriculum Tracks**
+* [cite_start]**Options**: After successfully finishing the *Passages* books, students have the opportunity to choose from several specialized learning paths based on their goals[cite: 14, 23].
+* **Available Courses**:
+    * [cite_start]IELTS preparation classes[cite: 15, 23].
+    * [cite_start]A Teacher Training Course (TTC)[cite: 15, 23].
+    * [cite_start]PTE courses, which are offered exclusively as private, one-on-one classes[cite: 23].
+    * [cite_start]Advanced English language courses to prepare for FCE, CAE, and CPE certifications[cite: 24].
+
+---
+
+### **Placement Test and Contact**
+
+* [cite_start]**Importance of Placement Test**: The school emphasizes the importance of its "short and friendly" placement test for all new students[cite: 27]. [cite_start]It is recommended even for those who believe they are absolute beginners[cite: 25]. [cite_start]The school's reasoning is that many individuals have some basic familiarity with English, perhaps with the alphabet or simple greetings[cite: 26]. [cite_start]Identifying this prior knowledge can potentially allow a student to skip one or two terms, saving both time and money[cite: 26].
+* [cite_start]**Contact Information**: For any inquiries about class schedules, online course formats, registration, or tuition fees, the school can be reached at the following number[cite: 12, 24].
+    * [cite_start]**Phone Number**: 021-57207[cite: 12, 25].

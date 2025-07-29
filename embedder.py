@@ -24,14 +24,14 @@ embeddings = OpenAIEmbeddings(
     base_url=AVALAI_BASE_URL
 )
 
-# faq_loader = TextLoader("data/faqs.csv")
-# service_loader = TextLoader("data/services.json")
+faq_loader = TextLoader("data/faqs.csv")
+service_loader = TextLoader("data/services.json")
 info_loader = TextLoader('data/info.md')
 # complaints = TextLoader('data/complaints.yaml')
 
 
-#faq_loader.load() + service_loader.load()#
-docs = info_loader.load()
+##
+docs = faq_loader.load() + service_loader.load() + info_loader.load()
 
 vectorstore = FAISS.from_documents(docs, embeddings)
 # retriever = vectorstore.as_retriever()
