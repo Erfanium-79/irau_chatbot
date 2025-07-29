@@ -136,20 +136,20 @@ else:
                 result = qa_chain.invoke({"query": query_for_qa})
                 return "\n" + result['result']
             except Exception as e:
-                return base_response + "\n\n(پایگاه دانش برای ارائه اطلاعات بیشتر در دسترس نیست.)"
+                return "لطفا دوباره بپرسید، خطایی رخ داد"
      
         def handle_visitor_info(query: str):
             """Handles visitor info intent, potentially enhanced with info from QA chain, in Persian."""
             base_response = "سلام، به نظر میرسه که اولین باره با مدرسه ایران استرالیا داری صحبت میکنی"
             if qa_chain is None:
-                return "\n\n(پایگاه دانش برای ارائه اطلاعات بیشتر در دسترس نیست.)"
+                return "لطفا دوباره بپرسید، خطایی رخ داد"
             try:
                 # Add prompt engineering for comprehensive Persian response
                 query_for_qa = f" سعی کن در قامت یک ربات فروش محصول کاربر را قانع کنی که یادگیری زبان کار مفیدی است و باید هرچه زودتر شروع کند و کجا بهتر از مدرسه ایران استرالیا، البته قبل از هر چیز اول جواب سوال پرسیده شده رو بده، مثلا اگه پرسید آدرس کجاست، اول آدرس رو دقیق بگو، بعد اگه حرف بیشتری داشتی بگو خیلی هم زیاده گویی نکن، مختصر و مفید، مثلا اگه پرسید چجوری ثبت نام کنم اول راجب به ثبت نام و تعیین سطح بگو، حواست باشه که تو ربات مجموعه آموزشی ایران استرالیا هستی و بجز این مدرسه نباید تبلیغ هیچ جای دیگه ای رو بکنی {query}"
                 result = qa_chain.invoke({"query": query_for_qa})
                 return "\n" + result['result']
             except Exception as e:
-                return base_response + "\n\n(پایگاه دانش برای ارائه اطلاعات بیشتر در دسترس نیست.)"
+                return "لطفا دوباره بپرسید، خطایی رخ داد"
             
         def handle_faq_or_support(query: str):
             """Handles FAQ or support intent, providing comprehensive Persian answers."""

@@ -155,11 +155,11 @@ iran-australia.com
 آدرس: میدان ولیعصر - ضلع شمال میدان به سمت راست - کوچه شهید ملایی - پلاک 3
 تلفن تماس: 57207-021
 
-Based on the provided text, the Iran-Australia Institute offers a variety of English language courses tailored to different needs, schedules, and age groups. The programs are structured with specific materials, durations, and placement procedures to accommodate students aiming for goals such as immigration, employment, or general language acquisition.
+Based on the provided text, the Iran-Australia school offers a variety of English language courses tailored to different needs, schedules, and age groups. The programs are structured with specific materials, durations, and placement procedures to accommodate students aiming for goals such as immigration, employment, or general language acquisition.
 
 ### Course Structures and Schedules
 
-The institute provides several course formats:
+The school provides several course formats:
 
 * [cite_start]**Intensive Courses (دوره های فشرده):** These are designed for individuals who need to learn the language quickly, such as for immigration or job requirements[cite: 2]. [cite_start]Classes run from Saturday to Wednesday for four hours daily[cite: 2]. [cite_start]It takes approximately six months to reach a level suitable for IELTS preparation in this format[cite: 3, 7]. [cite_start]The certificate provided at the end of this course is issued by the Ministry of Science and is translatable[cite: 2].
 
@@ -169,18 +169,6 @@ The institute provides several course formats:
 
 * [cite_start]**Two-Days-a-Week Courses:** To reduce travel time, students can opt for classes held twice a week in longer sessions (2.5 hours each) instead of three times a week[cite: 33]. [cite_start]This format offers flexibility with various possible day combinations[cite: 33, 34].
 
----
-
-### Curriculum and Textbooks
-
-The institute uses a combination of proprietary and standard materials:
-
-* [cite_start]**Exclusive Books:** The core curriculum is taught using the institute's exclusive "Roadmap" and "Page" series of books[cite: 36].
-* [cite_start]**Guideline Texts:** The "Four Corners" series by Jack C. Richards is used as a supplementary guideline but is not the primary textbook[cite: 36, 37].
-* [cite_start]**Framework:** The teaching methodology is based on the Common European Framework of Reference for Languages (CEFR) model[cite: 46].
-* [cite_start]**Children's Books:** Courses for younger learners use age-appropriate books such as "Start-up" and "Ship"[cite: 43].
-
----
 
 ### Student Placement and Evaluation
 
@@ -188,16 +176,16 @@ A structured process is in place to ensure students are placed in the correct le
 
 * [cite_start]**Placement Test:** All adult students, regardless of their prior experience, are encouraged to take a placement test that includes written and oral components[cite: 38]. [cite_start]For teenagers and children, the assessment is only oral[cite: 38].
 * [cite_start]**Initial Evaluation:** The initial placement is considered a preliminary judgment[cite: 39]. [cite_start]Instructors conduct a more thorough evaluation during the first five sessions of the course[cite: 39].
-* [cite_start]**Level Adjustment:** Based on this in-class evaluation, a student may be moved to a higher or lower level to ensure they are in the most suitable learning environment[cite: 40]. [cite_start]The institute emphasizes its commitment to finding the best fit for each student[cite: 40].
+* [cite_start]**Level Adjustment:** Based on this in-class evaluation, a student may be moved to a higher or lower level to ensure they are in the most suitable learning environment[cite: 40]. [cite_start]The school emphasizes its commitment to finding the best fit for each student[cite: 40].
 
 ---
 
 ### Flexibility and Customization
 
-The institute adapts its programs to individual student needs and learning paces:
+The school adapts its programs to individual student needs and learning paces:
 
 * **Pacing:** The speed of instruction can be adjusted for a student's ability. [cite_start]For example, a highly proficient student may complete a textbook in 30 sessions instead of the standard 36, with the course fee adjusted accordingly[cite: 14, 15, 16].
-* [cite_start]**Needs-Based Learning:** The institute focuses on tailoring education to meet specific student goals, citing successful outcomes such as helping students achieve an IELTS score of 6.5 for immigration purposes[cite: 26, 28].
+* [cite_start]**Needs-Based Learning:** The school focuses on tailoring education to meet specific student goals, citing successful outcomes such as helping students achieve an IELTS score of 6.5 for immigration purposes[cite: 26, 28].
 
 ---
 
