@@ -19,17 +19,19 @@ AVALAI_BASE_URL = "https://api.avalai.ir/v1"
 qa_chain = None
 
 embeddings = OpenAIEmbeddings(
-    model="text-embedding-3-small",
+    model="text-embedding-3-large",
     api_key=AVALAI_API_KEY,
     base_url=AVALAI_BASE_URL
 )
 
-faq_loader = TextLoader("data/faqs.csv")
-service_loader = TextLoader("data/services.json")
+# faq_loader = TextLoader("data/faqs.csv")
+# service_loader = TextLoader("data/services.json")
 info_loader = TextLoader('data/info.md')
-complaints = TextLoader('data/complaints.yaml')
+# complaints = TextLoader('data/complaints.yaml')
 
-docs = faq_loader.load() + service_loader.load() + info_loader.load()
+
+#faq_loader.load() + service_loader.load()#
+docs = info_loader.load()
 
 vectorstore = FAISS.from_documents(docs, embeddings)
 # retriever = vectorstore.as_retriever()
