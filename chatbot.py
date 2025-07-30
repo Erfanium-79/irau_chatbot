@@ -16,6 +16,7 @@ from langchain_openai import ChatOpenAI
 from langchain.chains import RetrievalQA
 from langchain.schema import HumanMessage
 import logging
+import traceback
 
 # Import the API key from your config.py file
 from config import AVALAI_API_KEY
@@ -138,6 +139,7 @@ else:
                 return "\n" + result['result']
             except Exception as e:
                 logging.error(f"Error in handle_greeting: {e}") # <-- LOG THE ERROR
+                logging.error(f"Error in handle_greeting:\n{traceback.format_exc()}")
                 return "3لطفا دوباره بپرسید، خطایی رخ داد"
      
         def handle_visitor_info(query: str):
