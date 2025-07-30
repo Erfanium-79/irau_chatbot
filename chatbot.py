@@ -136,7 +136,7 @@ else:
                 result = qa_chain.invoke({"query": query_for_qa})
                 return "\n" + result['result']
             except Exception as e:
-                return "لطفا دوباره بپرسید، خطایی رخ داد"
+                return "3لطفا دوباره بپرسید، خطایی رخ داد"
      
         def handle_visitor_info(query: str):
             """Handles visitor info intent, potentially enhanced with info from QA chain, in Persian."""
@@ -149,7 +149,7 @@ else:
                 result = qa_chain.invoke({"query": query_for_qa})
                 return "\n" + result['result']
             except Exception as e:
-                return "لطفا دوباره بپرسید، خطایی رخ داد"
+                return "2لطفا دوباره بپرسید، خطایی رخ داد"
             
         def handle_faq_or_support(query: str):
             """Handles FAQ or support intent, providing comprehensive Persian answers."""
