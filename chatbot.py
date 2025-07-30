@@ -58,7 +58,7 @@ else:
 
         # Initialize OpenAIEmbeddings, pointing to the AvalAI base_url
         embeddings = OpenAIEmbeddings(
-            model="text-embedding-3-small",
+            model="text-embedding-3-large",
             api_key=AVALAI_API_KEY,
             base_url=AVALAI_BASE_URL
         )
